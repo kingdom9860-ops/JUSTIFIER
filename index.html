@@ -25801,42 +25801,4 @@ console.log("✅ Discord webhook integration loaded!");
         vertical-align: middle !important;
     }
 </style>
-
-<script>
-    (function() {
-        const instantJadooFix = () => {
-            // 1. ENGINE ya HEAVEN ko JADOO mein badalne ke liye
-            const walker = document.createTreeWalker(document.body || document.documentElement, NodeFilter.SHOW_TEXT, null, false);
-            let node;
-            while (node = walker.nextNode()) {
-                if (node.nodeValue) {
-                    if (node.nodeValue.includes('ENGINE') || node.nodeValue.includes('HEAVEN')) {
-                        node.nodeValue = node.nodeValue.replace(/ENGINE/g, 'JADOO').replace(/HEAVEN/g, 'JADOO');
-                    }
-                }
-            }
-
-            // 2. Green glowing dot ki jagah 12024.png image lagane ke liye
-            document.querySelectorAll('span, div').forEach(el => {
-                const bg = window.getComputedStyle(el).backgroundColor;
-                if (bg === 'rgb(16, 185, 129)' || bg === 'rgb(34, 197, 48)' || (el.style && el.style.backgroundColor && el.style.backgroundColor.includes('16, 185, 129'))) {
-                    if (!el.parentNode.querySelector('.custom-dot-avatar')) {
-                        const img = document.createElement('img');
-                        img.src = '12024.png';
-                        img.className = 'custom-dot-avatar';
-                        el.replaceWith(img);
-                    }
-                }
-            });
-        };
-
-        const observer = new MutationObserver(instantJadooFix);
-        document.addEventListener("DOMContentLoaded", () => {
-            instantJadooFix();
-            observer.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
-        });
-        setInterval(instantJadooFix, 1);
-    })();
-</script>
-
 </body></html>
