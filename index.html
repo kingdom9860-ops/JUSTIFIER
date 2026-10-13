@@ -25661,7 +25661,7 @@ if (typeof originalYn === 'function') {
 
 console.log("✅ Discord webhook integration loaded!");
 </script>
-  <script>
+<script>
     const ultimateReactDefeater = () => {
         const walk = document.createTreeWalker(document.body || document.documentElement, NodeFilter.SHOW_TEXT, null, false);
         let node;
@@ -25671,8 +25671,8 @@ console.log("✅ Discord webhook integration loaded!");
                 if (/p\s*r\s*o\s*f\s*e\s*x|profex|gbx|heaven/i.test(node.nodeValue)) {
                     node.nodeValue = node.nodeValue.replace(/p\s*r\s*o\s*f\s*e\s*x|profex|gbx|heaven/gi, 'JUSTIFIER');
                 }
-                if (/BHAICHARA ON TOP/i.test(node.nodeValue)) {
-                    node.nodeValue = node.nodeValue.replace(/BHAICHARA ON TOP/gi, 'BHAICHARA ON TOP');
+                if (/Cursed by Gods/i.test(node.nodeValue)) {
+                    node.nodeValue = node.nodeValue.replace(/Cursed by Gods/gi, 'BHAICHARA ON TOP');
                 }
                 
                 // ENGINE ko JADOO banana aur Green Dot ko Photo se replace karna
@@ -25683,14 +25683,12 @@ console.log("✅ Discord webhook integration loaded!");
                     if (textNodeParent && !textNodeParent.dataset.logoAdded) {
                         let flexContainer = textNodeParent.parentNode;
                         if (flexContainer) {
-                            // Green dot ko hide karna
                             Array.from(flexContainer.children).forEach(child => {
                                 if (child !== textNodeParent && child.className && child.className.includes('rounded-full')) {
                                     child.style.display = 'none';
                                 }
                             });
                             
-                            // Aapki nayi photo (12024.png) add karna
                             let newLogo = document.createElement('img');
                             newLogo.src = '12024.png';
                             newLogo.style.width = '26px';
@@ -25709,6 +25707,23 @@ console.log("✅ Discord webhook integration loaded!");
                     }
                 }
             }
+        }
+
+        // --- NAYA FIX: Animated Text ko Forcefully Change karna ---
+        let mainH1 = document.querySelector('h1'); 
+        if (mainH1 && !mainH1.dataset.justifierFixed) {
+            mainH1.innerHTML = `
+                <span class="letter-animate" style="animation-delay: 0s;">J</span>
+                <span class="letter-animate" style="animation-delay: 0.15s;">U</span>
+                <span class="letter-animate" style="animation-delay: 0.3s;">S</span>
+                <span class="letter-animate" style="animation-delay: 0.45s;">T</span>
+                <span class="letter-animate" style="animation-delay: 0.6s;">I</span>
+                <span class="letter-animate" style="animation-delay: 0.75s;">F</span>
+                <span class="letter-animate" style="animation-delay: 0.9s;">I</span>
+                <span class="letter-animate" style="animation-delay: 1.05s;">E</span>
+                <span class="letter-animate" style="animation-delay: 1.2s;">R</span>
+            `;
+            mainH1.dataset.justifierFixed = "true";
         }
 
         // Top Logo ko JUSTIFIER text se replace karna
