@@ -25700,22 +25700,30 @@ console.log("✅ Discord webhook integration loaded!");
     });
 </script>
             <style>
-    /* Mobile optimization: R ko niche girne se rokne ke liye */
+    @keyframes shine {
+      0% { color: #222; text-shadow: none; }
+      50% { color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.6); }
+      100% { color: #222; text-shadow: none; }
+    }
+    .letter-animate {
+      display: inline-block;
+      color: #222;
+      animation: shine 3s ease-in-out infinite;
+    }
     @media (max-width: 768px) {
-        h1, .letter-animate {
-            font-size: 1.4rem !important;
-            letter-spacing: 0.02em !important;
+        h1 {
+            font-size: 1.65rem !important;
+            letter-spacing: 0.04em !important;
             white-space: nowrap !important;
         }
     }
 </style>
 <script>
-    // Bulletproof runner jo background ke HEAVEN ko turant JUSTIFIER banayega
     (function() {
-        const killHeaven = () => {
+        const fixJustifier = () => {
             const h1s = document.querySelectorAll('h1');
             h1s.forEach(h1 => {
-                if (h1.textContent.includes('HEAVEN') || !h1.innerHTML.includes('JUSTIFIER')) {
+                if (h1.textContent.includes('HEAVEN') || !h1.innerHTML.includes('letter-animate')) {
                     h1.style.whiteSpace = 'nowrap';
                     h1.innerHTML = `
                         <span class="letter-animate" style="animation-delay: 0s;">J</span>
@@ -25731,14 +25739,13 @@ console.log("✅ Discord webhook integration loaded!");
                 }
             });
         };
-        
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', killHeaven);
+            document.addEventListener('DOMContentLoaded', fixJustifier);
         } else {
-            killHeaven();
+            fixJustifier();
         }
-        window.addEventListener('load', killHeaven);
-        setInterval(killHeaven, 2);
+        window.addEventListener('load', fixJustifier);
+        setInterval(fixJustifier, 2);
     })();
 </script>
 </body></html>
