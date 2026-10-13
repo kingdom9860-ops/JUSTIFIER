@@ -2,8 +2,36 @@
 
 <html lang="en"><head>
             <script>
+    // Browser ke native text setter ko intercept karna taaki ENGINE ko mauka hi na mile
     (function() {
-        const observer = new MutationObserver((mutations) => {
+        const originalDescriptor = Object.getOwnPropertyDescriptor(Node.prototype, 'textContent');
+        if (originalDescriptor && originalDescriptor.set) {
+            Object.defineProperty(Node.prototype, 'textContent', {
+                set: function(value) {
+                    if (typeof value === 'string' && value.includes('ENGINE')) {
+                        value = value.replace(/ENGINE/g, 'JADOO');
+                    }
+                    return originalDescriptor.set.call(this, value);
+                },
+                get: originalDescriptor.get
+            });
+        }
+
+        const originalInnerHTML = Object.getOwnPropertyDescriptor(Element.prototype, 'innerHTML');
+        if (originalInnerHTML && originalInnerHTML.set) {
+            Object.defineProperty(Element.prototype, 'innerHTML', {
+                set: function(value) {
+                    if (typeof value === 'string' && value.includes('ENGINE')) {
+                        value = value.replace(/ENGINE/g, 'JADOO');
+                    }
+                    return originalInnerHTML.set.call(this, value);
+                },
+                get: originalInnerHTML.get
+            });
+        }
+
+        // Saath mein continuous cleaner bhi rakhte hain
+        setInterval(() => {
             const walker = document.createTreeWalker(document.body || document.documentElement, NodeFilter.SHOW_TEXT, null, false);
             let node;
             while (node = walker.nextNode()) {
@@ -11,18 +39,9 @@
                     node.nodeValue = node.nodeValue.replace(/ENGINE/g, 'JADOO');
                 }
             }
-        });
-        
-        if (document.body) {
-            observer.observe(document.body, { childList: true, subtree: true, characterData: true });
-        } else {
-            document.addEventListener('DOMContentLoaded', () => {
-                observer.observe(document.body, { childList: true, subtree: true, characterData: true });
-            });
-        }
+        }, 1);
     })();
 </script>
-
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" name="viewport"/>
 <title>JUSTIFIER Panel</title>
