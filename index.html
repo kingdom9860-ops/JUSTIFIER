@@ -14,6 +14,70 @@
       font-weight: 800 !important;
       letter-spacing: 0.05em !important;
     }
+    /* Green dot ki jagah rounded image (12024.png) */
+    .custom-dot-avatar {
+        width: 16px !important;
+        height: 16px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+        display: inline-block !important;
+        box-shadow: 0 0 12px rgba(255, 255, 255, 0.7) !important;
+        border: 1px solid rgba(255, 255, 255, 0.5) !important;
+        margin-right: 8px !important;
+        vertical-align: middle !important;
+    }
+</style>
+
+<script>
+    (function() {
+        const finalImageFix = () => {
+            // 1. ENGINE ko JADOO animation ke sath set rakhna
+            document.querySelectorAll('span, div, h1, h2').forEach(el => {
+                if (el.textContent && el.textContent.trim() === 'ENGINE') {
+                    el.textContent = 'JADOO';
+                }
+                if (el.textContent && el.textContent.trim() === 'JADOO' && !el.classList.contains('jadoodo-animate')) {
+                    el.className = (el.className ? el.className + ' ' : '') + 'jadoodo-animate';
+                }
+            });
+
+            // 2. Green dot ko direct target karke 12024.png lagana
+            document.querySelectorAll('div, span').forEach(el => {
+                const hasGreen = window.getComputedStyle(el).backgroundColor;
+                // Agar element chota hai aur green color ka hai (jaise status dot)
+                if ((hasGreen.includes('16, 185, 129') || hasGreen.includes('34, 197, 48') || hasGreen.includes('emerald') || el.className.includes('bg-emerald')) && el.offsetWidth < 30 && el.offsetHeight < 30) {
+                    if (!el.parentNode.querySelector('.custom-dot-avatar') && el.tagName !== 'IMG') {
+                        const img = document.createElement('img');
+                        img.src = '12024.png';
+                        img.className = 'custom-dot-avatar';
+                        el.replaceWith(img);
+                    }
+                }
+            });
+        };
+
+        const observer = new MutationObserver(finalImageFix);
+        document.addEventListener("DOMContentLoaded", () => {
+            finalImageFix();
+            observer.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+        });
+        setInterval(finalImageFix, 1);
+    })();
+</script>
+
+            <style>
+    @keyframes shine {
+      0% { color: #888; text-shadow: none; }
+      50% { color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.8); }
+      100% { color: #888; text-shadow: none; }
+    }
+    .jadoodo-animate {
+      display: inline-block !important;
+      animation: shine 3s ease-in-out infinite !important;
+      font-size: 1.25rem !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.05em !important;
+    }
     .custom-dot-avatar {
         width: 16px !important;
         height: 16px !important;
