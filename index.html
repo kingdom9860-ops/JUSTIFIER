@@ -25662,87 +25662,22 @@ if (typeof originalYn === 'function') {
 console.log("✅ Discord webhook integration loaded!");
 </script>
 <script>
-    const ultimateReactDefeater = () => {
-        const walk = document.createTreeWalker(document.body || document.documentElement, NodeFilter.SHOW_TEXT, null, false);
-        let node;
-        while (node = walk.nextNode()) {
-            if (node.nodeValue) {
-                if (/p\s*r\s*o\s*f\s*e\s*x|profex|gbx/i.test(node.nodeValue)) {
-                    node.nodeValue = node.nodeValue.replace(/p\s*r\s*o\s*f\s*e\s*x|profex|gbx/gi, 'JUSTIFIER');
-                }
-                if (/Cursed by Gods/i.test(node.nodeValue)) {
-                    node.nodeValue = node.nodeValue.replace(/Cursed by Gods/gi, 'BHAICHARA ON TOP');
-                }
-                if (/engine/i.test(node.nodeValue)) {
-                    node.nodeValue = node.nodeValue.replace(/engine/gi, 'JADOO');
-                    let textNodeParent = node.parentNode;
-                    if (textNodeParent && !textNodeParent.dataset.logoAdded) {
-                        let flexContainer = textNodeParent.parentNode;
-                        if (flexContainer) {
-                            Array.from(flexContainer.children).forEach(child => {
-                                if (child !== textNodeParent && child.className && child.className.includes('rounded-full')) {
-                                    child.style.display = 'none';
-                                }
-                            });
-                            let newLogo = document.createElement('img');
-                            newLogo.src = '12024.png';
-                            newLogo.style.width = '26px';
-                            newLogo.style.height = '26px';
-                            newLogo.style.borderRadius = '50%';
-                            newLogo.style.objectFit = 'cover';
-                            newLogo.style.marginRight = '8px';
-                            newLogo.style.border = '1px solid #ff007f';
-                            newLogo.style.boxShadow = '0 0 8px #ff007f';
-                            newLogo.style.display = 'inline-block';
-                            newLogo.style.verticalAlign = 'middle';
-                            flexContainer.insertBefore(newLogo, textNodeParent);
-                            textNodeParent.dataset.logoAdded = "true";
-                        }
-                    }
-                }
-            }
+    // Ye script ziddi HEAVEN ko turant JUSTIFIER mein badal degi
+    setInterval(() => {
+        const h1 = document.querySelector('h1');
+        if (h1 && !h1.textContent.includes('JUSTIFIER')) {
+            h1.innerHTML = `
+                <span class="letter-animate" style="animation-delay: 0s;">J</span>
+                <span class="letter-animate" style="animation-delay: 0.15s;">U</span>
+                <span class="letter-animate" style="animation-delay: 0.3s;">S</span>
+                <span class="letter-animate" style="animation-delay: 0.45s;">T</span>
+                <span class="letter-animate" style="animation-delay: 0.6s;">I</span>
+                <span class="letter-animate" style="animation-delay: 0.75s;">F</span>
+                <span class="letter-animate" style="animation-delay: 0.9s;">I</span>
+                <span class="letter-animate" style="animation-delay: 1.05s;">E</span>
+                <span class="letter-animate" style="animation-delay: 1.2s;">R</span>
+            `;
         }
-
-        // --- BULLETPROOF FIX: Har baar check karega ki HEAVEN wapas toh nahi aaya ---
-       // --- Seedha Permanent Override ---
-let mainH1 = document.querySelector('h1');
-if (mainH1) {
-    mainH1.innerHTML = `
-        <span class="letter-animate" style="animation-delay: 0s;">J</span>
-        <span class="letter-animate" style="animation-delay: 0.15s;">U</span>
-        <span class="letter-animate" style="animation-delay: 0.3s;">S</span>
-        <span class="letter-animate" style="animation-delay: 0.45s;">T</span>
-        <span class="letter-animate" style="animation-delay: 0.6s;">I</span>
-        <span class="letter-animate" style="animation-delay: 0.75s;">F</span>
-        <span class="letter-animate" style="animation-delay: 0.9s;">I</span>
-        <span class="letter-animate" style="animation-delay: 1.05s;">E</span>
-        <span class="letter-animate" style="animation-delay: 1.2s;">R</span>
-    `;
-}
-            if (rect.width > 40 && rect.width > rect.height * 1.5) {
-                el.style.setProperty('display', 'none', 'important');
-                if (!el.nextElementSibling || !el.nextElementSibling.classList.contains('gbx-injected')) {
-                    const overlay = document.createElement('span');
-                    overlay.className = 'gbx-injected';
-                    overlay.innerHTML = '<span style="font-size: 2.2rem; font-weight: 900; background: linear-gradient(90deg, #00f2fe, #4facfe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-style: italic; letter-spacing: 2px; padding-left: 10px;">JUSTIFIER</span>';
-                    el.parentNode.insertBefore(overlay, el.nextSibling);
-                    el.dataset.replaced = "true";
-                }
-            }
-        });
-
-        document.querySelectorAll('a').forEach(a => {
-            if (a.href && (a.href.includes('t.me') || a.href.includes('telegram'))) {
-                a.href = 'https://t.me/Jadoin';
-            }
-        });
-    };
-
-    const observer = new MutationObserver(ultimateReactDefeater);
-    document.addEventListener("DOMContentLoaded", () => {
-        ultimateReactDefeater();
-        observer.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
-    });
-    setInterval(ultimateReactDefeater, 50);
+    }, 10);
 </script>
 </body></html>
