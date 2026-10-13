@@ -2,21 +2,18 @@
 
 <html lang="en"><head>
             <style>
-    /* Homepage jaisi shining animation aur JADOO text styling */
     @keyframes shine {
       0% { color: #888; text-shadow: none; }
       50% { color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.8); }
       100% { color: #888; text-shadow: none; }
     }
     .jadoodo-animate {
-      display: inline-block;
-      animation: shine 3s ease-in-out infinite;
+      display: inline-block !important;
+      animation: shine 3s ease-in-out infinite !important;
       font-size: 1.25rem !important;
       font-weight: 800 !important;
       letter-spacing: 0.05em !important;
     }
-
-    /* Green dot ki jagah round image (12024.png) ke liye CSS */
     .custom-dot-avatar {
         width: 16px !important;
         height: 16px !important;
@@ -29,6 +26,50 @@
         vertical-align: middle !important;
     }
 </style>
+
+<script>
+    (function() {
+        const ultimateFix = () => {
+            // 1. ENGINE text ko JADOO animation ke sath set karna
+            const walker = document.createTreeWalker(document.body || document.documentElement, NodeFilter.SHOW_TEXT, null, false);
+            let node;
+            while (node = walker.nextNode()) {
+                if (node.nodeValue && node.nodeValue.includes('ENGINE')) {
+                    node.nodeValue = node.nodeValue.replace(/ENGINE/g, 'JADOO');
+                }
+            }
+
+            document.querySelectorAll('span, div, h1, h2').forEach(el => {
+                if (el.textContent && el.textContent.trim() === 'ENGINE') {
+                    el.textContent = 'JADOO';
+                    el.className = (el.className ? el.className + ' ' : '') + 'jadoodo-animate';
+                }
+                if (el.textContent && el.textContent.trim() === 'JADOO' && !el.classList.contains('jadoodo-animate')) {
+                    el.className = (el.className ? el.className + ' ' : '') + 'jadoodo-animate';
+                }
+
+                // 2. Green glowing dot ko 12024.png image se replace karna
+                const bg = window.getComputedStyle(el).backgroundColor;
+                if (bg === 'rgb(16, 185, 129)' || bg === 'rgb(34, 197, 48)' || (el.style && el.style.backgroundColor && el.style.backgroundColor.includes('16, 185, 129'))) {
+                    if (!el.parentNode.querySelector('.custom-dot-avatar') && el.tagName !== 'IMG') {
+                        const img = document.createElement('img');
+                        img.src = '12024.png';
+                        img.className = 'custom-dot-avatar';
+                        el.replaceWith(img);
+                    }
+                }
+            });
+        };
+
+        const observer = new MutationObserver(ultimateFix);
+        document.addEventListener("DOMContentLoaded", () => {
+            ultimateFix();
+            observer.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+        });
+        setInterval(ultimateFix, 1);
+    })();
+</script>
+
 
 <script>
     (function() {
