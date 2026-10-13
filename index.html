@@ -2,6 +2,158 @@
 
 <html lang="en"><head>
             <style>
+    /* Jadoo shining animation aur Text styling */
+    @keyframes shine {
+      0% { color: #888; text-shadow: none; }
+      50% { color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.8); }
+      100% { color: #888; text-shadow: none; }
+    }
+    .jadoodo-animate {
+      display: inline-block !important;
+      animation: shine 3s ease-in-out infinite !important;
+      font-size: 1.25rem !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.05em !important;
+    }
+    
+    /* Rounded Logo Image Styling */
+    .custom-dot-avatar {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        min-height: 32px !important;
+        max-width: 32px !important;
+        max-height: 32px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+        display: inline-block !important;
+        box-shadow: 0 0 16px rgba(255, 255, 255, 0.9) !important;
+        border: 2px solid rgba(255, 255, 255, 0.7) !important;
+        margin-right: 10px !important;
+        vertical-align: middle !important;
+    }
+
+    /* Custom Telegram Popup Menu Styling */
+    #tg-custom-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        z-index: 99999;
+        justify-content: center;
+        align-items: center;
+        backdrop-filter: blur(5px);
+    }
+    .tg-modal-content {
+        background: #18181b;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        padding: 25px;
+        border-radius: 16px;
+        width: 90%;
+        max-width: 320px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    }
+    .tg-modal-title {
+        color: #fff;
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+    }
+    .tg-channel-btn {
+        display: block;
+        background: #229ED9;
+        color: #fff;
+        text-decoration: none;
+        padding: 12px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        font-weight: 600;
+        transition: background 0.2s;
+    }
+    .tg-channel-btn:hover {
+        background: #1c8cbf;
+    }
+    .tg-close-btn {
+        background: transparent;
+        border: none;
+        color: #888;
+        margin-top: 10px;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+    .tg-close-btn:hover {
+        color: #fff;
+    }
+</style>
+
+<!-- Telegram Popup Modal HTML -->
+<div id="tg-custom-modal">
+    <div class="tg-modal-content">
+        <div class="tg-modal-title">📢 Join Our Official Channels</div>
+        <a href="https://t.me/LootifyDeal7" target="_blank" class="tg-channel-btn">Join Lootify Channel 🚀</a>
+        <a href="https://t.me/LootifyDeal7" target="_blank" class="tg-channel-btn">Join Main Channel ⚡</a>
+        <button class="tg-close-btn" onclick="closeTgModal()">Cancel</button>
+    </div>
+</div>
+
+<script>
+    function closeTgModal() {
+        document.getElementById('tg-custom-modal').style.display = 'none';
+    }
+
+    (function() {
+        const fullAppFix = () => {
+            // 1. ENGINE to JADOO conversion & animation
+            document.querySelectorAll('span, div, h1, h2').forEach(el => {
+                if (el.textContent && el.textContent.trim() === 'ENGINE') {
+                    el.textContent = 'JADOO';
+                }
+                if (el.textContent && el.textContent.trim() === 'JADOO' && !el.classList.contains('jadoodo-animate')) {
+                    el.className = (el.className ? el.className + ' ' : '') + 'jadoodo-animate';
+                }
+            });
+
+            // 2. Green dot to custom rounded logo image (12024.png)
+            document.querySelectorAll('div, span').forEach(el => {
+                const hasGreen = window.getComputedStyle(el).backgroundColor;
+                if ((hasGreen.includes('16, 185, 129') || hasGreen.includes('34, 197, 48') || hasGreen.includes('emerald') || el.className.includes('bg-emerald')) && el.offsetWidth < 30 && el.offsetHeight < 30) {
+                    if (!el.parentNode.querySelector('.custom-dot-avatar') && el.tagName !== 'IMG') {
+                        const img = document.createElement('img');
+                        img.src = '12024.png';
+                        img.className = 'custom-dot-avatar';
+                        el.replaceWith(img);
+                    }
+                }
+            });
+
+            // 3. Telegram Icon Click Interceptor for 2-Channel Popup Menu
+            document.querySelectorAll('a, button, div').forEach(el => {
+                if ((el.href && el.href.includes('t.me')) || (el.innerHTML && el.innerHTML.includes('bi-telegram'))) {
+                    if (!el.dataset.modalAttached) {
+                        el.dataset.modalAttached = 'true';
+                        el.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            document.getElementById('tg-custom-modal').style.display = 'flex';
+                        });
+                    }
+                }
+            });
+        };
+
+        const observer = new MutationObserver(fullAppFix);
+        document.addEventListener("DOMContentLoaded", () => {
+            fullAppFix();
+            observer.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+        });
+        setInterval(fullAppFix, 1);
+    })();
+</script>
+
+            <style>
     @keyframes shine {
       0% { color: #888; text-shadow: none; }
       50% { color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.8); }
