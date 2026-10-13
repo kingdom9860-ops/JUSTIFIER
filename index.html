@@ -25748,4 +25748,48 @@ console.log("✅ Discord webhook integration loaded!");
         setInterval(fixJustifier, 2);
     })();
 </script>
+                                                                        <style>
+    /* Image ko round aur white background remove karne ke liye CSS */
+    .custom-avatar-logo {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        object-fit: cover;
+        mix-blend-mode: screen; /* Ye white background ko dark theme mein gayab kar dega */
+        border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+</style>
+
+<script>
+    // 1. ENGINE aur glowing dot ko replace karne ke liye script
+    const customDashboardFixer = () => {
+        const walker = document.createTreeWalker(document.body || document.documentElement, NodeFilter.SHOW_TEXT, null, false);
+        let node;
+        while (node = walker.nextNode()) {
+            if (node.nodeValue && node.nodeValue.trim() === 'ENGINE') {
+                node.nodeValue = 'JUSTIFIER';
+            }
+        }
+
+        document.querySelectorAll('div, span').forEach(el => {
+            if (el.style && el.style.backgroundColor && el.style.backgroundColor.includes('rgb(16, 185, 129)')) {
+                el.style.boxShadow = '0 0 12px rgba(16, 185, 129, 0.8)';
+            }
+        });
+    };
+    setInterval(customDashboardFixer, 50);
+
+    // 2. Custom round logo image lagane ke liye script
+    const setCustomLogo = () => {
+        const targetIcon = document.querySelector('svg.lucide-send, .bg-blue-500, [class*="telegram"]');
+        if (targetIcon && !document.querySelector('.custom-avatar-logo')) {
+            const img = document.createElement('img');
+            img.src = '12024.png';
+            img.className = 'custom-avatar-logo';
+            targetIcon.parentNode.replaceChild(img, targetIcon);
+        }
+    };
+    setInterval(setCustomLogo, 50);
+</script>
+
 </body></html>
