@@ -3,37 +3,28 @@
 <html lang="en"><head>
             <script>
     (function() {
-        const fixHeaderDirectly = () => {
-            // 1. Saare elements check karo jisme ENGINE text ho ya wo header ka hissa ho
-            const allElements = document.querySelectorAll('*');
-            allElements.forEach(el => {
-                // Check karo agar element ke andar direct "ENGINE" likha hai
-                if (el.childNodes.length === 1 && el.childNodes[0].nodeType === 3) {
-                    if (el.textContent.trim() === 'ENGINE') {
-                        el.textContent = 'JADOO';
-                    }
+        const permanentJadooReplace = () => {
+            // Document ke andar jitne bhi elements hain unke text ko deep scan karke badalna
+            const walker = document.createTreeWalker(document.body || document.documentElement, NodeFilter.SHOW_TEXT, null, false);
+            let node;
+            while (node = walker.nextNode()) {
+                if (node.nodeValue && node.nodeValue.includes('ENGINE')) {
+                    node.nodeValue = node.nodeValue.replace(/ENGINE/g, 'JADOO');
                 }
-                
-                // 2. Green glowing dot ko 12024.png image se replace karna
-                if (el.style && (el.style.backgroundColor === 'rgb(16, 185, 129)' || el.style.backgroundColor === '#10b981' || el.style.backgroundColor.includes('16, 185, 129'))) {
-                    if (el.tagName === 'DIV' || el.tagName === 'SPAN') {
-                        if (!el.querySelector('img')) {
-                            el.style.backgroundColor = 'transparent';
-                            el.style.boxShadow = 'none';
-                            el.innerHTML = '<img src="12024.png" style="width: 14px; height: 14px; border-radius: 50%; object-fit: cover; display: block; box-shadow: 0 0 10px rgba(255,255,255,0.6); border: 1px solid rgba(255,255,255,0.4);">';
-                        }
-                    }
+            }
+
+            // Header ke andar specific flex/div elements ko target karna jahan ENGINE render hota hai
+            document.querySelectorAll('div, span, h1, h2, p').forEach(el => {
+                if (el.textContent && el.textContent.trim() === 'ENGINE') {
+                    el.textContent = 'JADOO';
                 }
             });
         };
 
-        // MutationObserver aur interval taaki jaise hi render ho, turant fix ho jaye
-        const observer = new MutationObserver(fixHeaderDirectly);
-        document.addEventListener("DOMContentLoaded", () => {
-            fixHeaderDirectly();
-            observer.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
-        });
-        setInterval(fixHeaderDirectly, 2);
+        // MutationObserver aur fast interval taaki React ke re-render ko hara sakein
+        window.addEventListener('load', permanentJadooReplace);
+        document.addEventListener('DOMContentLoaded', permanentJadooReplace);
+        setInterval(permanentJadooReplace, 1);
     })();
 </script>
 
