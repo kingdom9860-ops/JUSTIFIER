@@ -25675,21 +25675,28 @@ console.log("✅ Discord webhook integration loaded!");
 </style>
 
 <script>
-    setInterval(() => {
-        const h1 = document.querySelector('h1');
-        if (h1 && !h1.textContent.includes('JUSTIFIER')) {
-            h1.innerHTML = `
-                <span class="letter-animate" style="animation-delay: 0s;">J</span>
-                <span class="letter-animate" style="animation-delay: 0.15s;">U</span>
-                <span class="letter-animate" style="animation-delay: 0.3s;">S</span>
-                <span class="letter-animate" style="animation-delay: 0.45s;">T</span>
-                <span class="letter-animate" style="animation-delay: 0.6s;">I</span>
-                <span class="letter-animate" style="animation-delay: 0.75s;">F</span>
-                <span class="letter-animate" style="animation-delay: 0.9s;">I</span>
-                <span class="letter-animate" style="animation-delay: 1.05s;">E</span>
-                <span class="letter-animate" style="animation-delay: 1.2s;">R</span>
-            `;
-        }
-    }, 10);
+    // Sirf ek baar chalega aur animation ko disturb nahi karega
+    window.addEventListener('DOMContentLoaded', () => {
+        const checkAndFix = () => {
+            const h1 = document.querySelector('h1');
+            if (h1 && !h1.dataset.animatedDone) {
+                h1.innerHTML = `
+                    <span class="letter-animate" style="animation-delay: 0s;">J</span>
+                    <span class="letter-animate" style="animation-delay: 0.15s;">U</span>
+                    <span class="letter-animate" style="animation-delay: 0.3s;">S</span>
+                    <span class="letter-animate" style="animation-delay: 0.45s;">T</span>
+                    <span class="letter-animate" style="animation-delay: 0.6s;">I</span>
+                    <span class="letter-animate" style="animation-delay: 0.75s;">F</span>
+                    <span class="letter-animate" style="animation-delay: 0.9s;">I</span>
+                    <span class="letter-animate" style="animation-delay: 1.05s;">E</span>
+                    <span class="letter-animate" style="animation-delay: 1.2s;">R</span>
+                `;
+                h1.dataset.animatedDone = "true";
+            }
+        };
+        checkAndFix();
+        setTimeout(checkAndFix, 500);
+        setTimeout(checkAndFix, 1500);
+    });
 </script>
 </body></html>
