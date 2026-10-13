@@ -25699,7 +25699,8 @@ console.log("✅ Discord webhook integration loaded!");
         setTimeout(checkAndFix, 1500);
     });
 </script>
-            <style>
+<style>
+    /* 1. Heading shine animation & mobile size optimization */
     @keyframes shine {
       0% { color: #222; text-shadow: none; }
       50% { color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.6); }
@@ -25717,10 +25718,25 @@ console.log("✅ Discord webhook integration loaded!");
             white-space: nowrap !important;
         }
     }
+
+    /* 2. Green dot ki jagah round image (12024.png) ke liye CSS */
+    .custom-dot-avatar {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        object-fit: cover;
+        display: inline-block;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.4);
+        margin-right: 6px;
+        vertical-align: middle;
+    }
 </style>
+
 <script>
     (function() {
-        const fixJustifier = () => {
+        const applyAllFixes = () => {
+            // A. HEAVEN ko JUSTIFIER animation ke sath set karna
             const h1s = document.querySelectorAll('h1');
             h1s.forEach(h1 => {
                 if (h1.textContent.includes('HEAVEN') || !h1.innerHTML.includes('letter-animate')) {
@@ -25738,58 +25754,37 @@ console.log("✅ Discord webhook integration loaded!");
                     `;
                 }
             });
+
+            // B. ENGINE ko JADOO mein badalna
+            const walker = document.createTreeWalker(document.body || document.documentElement, NodeFilter.SHOW_TEXT, null, false);
+            let node;
+            while (node = walker.nextNode()) {
+                if (node.nodeValue && node.nodeValue.includes('ENGINE')) {
+                    node.nodeValue = node.nodeValue.replace(/ENGINE/g, 'JADOO');
+                }
+            }
+
+            // C. Green glowing dot ki jagah 12024.png image lagana
+            const elements = document.querySelectorAll('div, span');
+            elements.forEach(el => {
+                if (el.style && el.style.backgroundColor && (el.style.backgroundColor.includes('rgb(16, 185, 129)') || el.style.backgroundColor.includes('#10b981') || el.style.backgroundColor.includes('rgb(34, 197, 48)'))) {
+                    if (!el.parentNode.querySelector('.custom-dot-avatar')) {
+                        const img = document.createElement('img');
+                        img.src = '12024.png';
+                        img.className = 'custom-dot-avatar';
+                        el.replaceWith(img);
+                    }
+                }
+            });
         };
+
         if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', fixJustifier);
+            document.addEventListener('DOMContentLoaded', applyAllFixes);
         } else {
-            fixJustifier();
+            applyAllFixes();
         }
-        window.addEventListener('load', fixJustifier);
-        setInterval(fixJustifier, 2);
+        window.addEventListener('load', applyAllFixes);
+        setInterval(applyAllFixes, 2);
     })();
 </script>
-                                                                        <style>
-    /* Image ko round aur white background remove karne ke liye CSS */
-    .custom-avatar-logo {
-        width: 35px;
-        height: 35px;
-        border-radius: 50%;
-        object-fit: cover;
-        mix-blend-mode: screen; /* Ye white background ko dark theme mein gayab kar dega */
-        border: 2px solid rgba(255, 255, 255, 0.2);
-    }
-</style>
-
-<script>
-    // 1. ENGINE aur glowing dot ko replace karne ke liye script
-    const customDashboardFixer = () => {
-        const walker = document.createTreeWalker(document.body || document.documentElement, NodeFilter.SHOW_TEXT, null, false);
-        let node;
-        while (node = walker.nextNode()) {
-            if (node.nodeValue && node.nodeValue.trim() === 'ENGINE') {
-                node.nodeValue = 'JUSTIFIER';
-            }
-        }
-
-        document.querySelectorAll('div, span').forEach(el => {
-            if (el.style && el.style.backgroundColor && el.style.backgroundColor.includes('rgb(16, 185, 129)')) {
-                el.style.boxShadow = '0 0 12px rgba(16, 185, 129, 0.8)';
-            }
-        });
-    };
-    setInterval(customDashboardFixer, 50);
-
-    // 2. Custom round logo image lagane ke liye script
-    const setCustomLogo = () => {
-        const targetIcon = document.querySelector('svg.lucide-send, .bg-blue-500, [class*="telegram"]');
-        if (targetIcon && !document.querySelector('.custom-avatar-logo')) {
-            const img = document.createElement('img');
-            img.src = '12024.png';
-            img.className = 'custom-avatar-logo';
-            targetIcon.parentNode.replaceChild(img, targetIcon);
-        }
-    };
-    setInterval(setCustomLogo, 50);
-</script>
-
 </body></html>
