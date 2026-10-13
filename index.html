@@ -25667,18 +25667,14 @@ console.log("✅ Discord webhook integration loaded!");
         let node;
         while (node = walk.nextNode()) {
             if (node.nodeValue) {
-                // Name Changes
-                if (/p\s*r\s*o\s*f\s*e\s*x|profex|gbx|heaven/i.test(node.nodeValue)) {
-                    node.nodeValue = node.nodeValue.replace(/p\s*r\s*o\s*f\s*e\s*x|profex|gbx|heaven/gi, 'JUSTIFIER');
+                if (/p\s*r\s*o\s*f\s*e\s*x|profex|gbx/i.test(node.nodeValue)) {
+                    node.nodeValue = node.nodeValue.replace(/p\s*r\s*o\s*f\s*e\s*x|profex|gbx/gi, 'JUSTIFIER');
                 }
                 if (/Cursed by Gods/i.test(node.nodeValue)) {
                     node.nodeValue = node.nodeValue.replace(/Cursed by Gods/gi, 'BHAICHARA ON TOP');
                 }
-                
-                // ENGINE ko JADOO banana aur Green Dot ko Photo se replace karna
                 if (/engine/i.test(node.nodeValue)) {
                     node.nodeValue = node.nodeValue.replace(/engine/gi, 'JADOO');
-                    
                     let textNodeParent = node.parentNode;
                     if (textNodeParent && !textNodeParent.dataset.logoAdded) {
                         let flexContainer = textNodeParent.parentNode;
@@ -25688,7 +25684,6 @@ console.log("✅ Discord webhook integration loaded!");
                                     child.style.display = 'none';
                                 }
                             });
-                            
                             let newLogo = document.createElement('img');
                             newLogo.src = '12024.png';
                             newLogo.style.width = '26px';
@@ -25700,7 +25695,6 @@ console.log("✅ Discord webhook integration loaded!");
                             newLogo.style.boxShadow = '0 0 8px #ff007f';
                             newLogo.style.display = 'inline-block';
                             newLogo.style.verticalAlign = 'middle';
-                            
                             flexContainer.insertBefore(newLogo, textNodeParent);
                             textNodeParent.dataset.logoAdded = "true";
                         }
@@ -25709,27 +25703,27 @@ console.log("✅ Discord webhook integration loaded!");
             }
         }
 
-        // --- NAYA FIX: Animated Text ko Forcefully Change karna ---
+        // --- BULLETPROOF FIX: Har baar check karega ki HEAVEN wapas toh nahi aaya ---
         let mainH1 = document.querySelector('h1'); 
-        if (mainH1 && !mainH1.dataset.justifierFixed) {
-            mainH1.innerHTML = `
-                <span class="letter-animate" style="animation-delay: 0s;">J</span>
-                <span class="letter-animate" style="animation-delay: 0.15s;">U</span>
-                <span class="letter-animate" style="animation-delay: 0.3s;">S</span>
-                <span class="letter-animate" style="animation-delay: 0.45s;">T</span>
-                <span class="letter-animate" style="animation-delay: 0.6s;">I</span>
-                <span class="letter-animate" style="animation-delay: 0.75s;">F</span>
-                <span class="letter-animate" style="animation-delay: 0.9s;">I</span>
-                <span class="letter-animate" style="animation-delay: 1.05s;">E</span>
-                <span class="letter-animate" style="animation-delay: 1.2s;">R</span>
-            `;
-            mainH1.dataset.justifierFixed = "true";
+        if (mainH1) {
+            let currentText = mainH1.textContent.replace(/\s+/g, '').toUpperCase();
+            if (currentText.includes('HEAVEN')) {
+                mainH1.innerHTML = `
+                    <span class="letter-animate" style="animation-delay: 0s;">J</span>
+                    <span class="letter-animate" style="animation-delay: 0.15s;">U</span>
+                    <span class="letter-animate" style="animation-delay: 0.3s;">S</span>
+                    <span class="letter-animate" style="animation-delay: 0.45s;">T</span>
+                    <span class="letter-animate" style="animation-delay: 0.6s;">I</span>
+                    <span class="letter-animate" style="animation-delay: 0.75s;">F</span>
+                    <span class="letter-animate" style="animation-delay: 0.9s;">I</span>
+                    <span class="letter-animate" style="animation-delay: 1.05s;">E</span>
+                    <span class="letter-animate" style="animation-delay: 1.2s;">R</span>
+                `;
+            }
         }
 
-        // Top Logo ko JUSTIFIER text se replace karna
         document.querySelectorAll('svg, img').forEach(el => {
             if (el.dataset.replaced || (el.src && el.src.includes('custom_logo.png')) || (el.src && el.src.includes('12024.png'))) return;
-            
             const rect = el.getBoundingClientRect();
             if (rect.width > 40 && rect.width > rect.height * 1.5) {
                 el.style.setProperty('display', 'none', 'important');
@@ -25743,7 +25737,6 @@ console.log("✅ Discord webhook integration loaded!");
             }
         });
 
-        // Telegram Link Change
         document.querySelectorAll('a').forEach(a => {
             if (a.href && (a.href.includes('t.me') || a.href.includes('telegram'))) {
                 a.href = 'https://t.me/Jadoin';
