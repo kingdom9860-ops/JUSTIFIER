@@ -2,6 +2,7 @@
 
 <html lang="en"><head>
             <style>
+    <style>
     /* Jadoo shining animation aur Text styling */
     @keyframes shine {
       0% { color: #888; text-shadow: none; }
@@ -41,38 +42,40 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(0, 0, 0, 0.7);
-        z-index: 99999;
+        background: rgba(0, 0, 0, 0.75);
+        z-index: 999999;
         justify-content: center;
         align-items: center;
-        backdrop-filter: blur(5px);
+        backdrop-filter: blur(6px);
     }
     .tg-modal-content {
         background: #18181b;
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
         padding: 25px;
         border-radius: 16px;
         width: 90%;
         max-width: 320px;
         text-align: center;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
     }
     .tg-modal-title {
         color: #fff;
-        font-size: 1.1rem;
+        font-size: 1.15rem;
         font-weight: 700;
-        margin-bottom: 15px;
+        margin-bottom: 20px;
     }
     .tg-channel-btn {
         display: block;
         background: #229ED9;
-        color: #fff;
+        color: #fff !important;
         text-decoration: none;
-        padding: 12px;
-        border-radius: 10px;
-        margin-bottom: 10px;
-        font-weight: 600;
+        padding: 13px;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        font-weight: 700;
+        font-size: 1rem;
         transition: background 0.2s;
+        box-shadow: 0 4px 12px rgba(34, 158, 217, 0.4);
     }
     .tg-channel-btn:hover {
         background: #1c8cbf;
@@ -80,10 +83,11 @@
     .tg-close-btn {
         background: transparent;
         border: none;
-        color: #888;
-        margin-top: 10px;
+        color: #aaa;
+        margin-top: 5px;
         cursor: pointer;
-        font-size: 0.9rem;
+        font-size: 0.95rem;
+        font-weight: 600;
     }
     .tg-close-btn:hover {
         color: #fff;
@@ -91,11 +95,11 @@
 </style>
 
 <!-- Telegram Popup Modal HTML -->
-<div id="tg-custom-modal">
+<div id="tg-custom-modal" onclick="if(event.target === this) closeTgModal();">
     <div class="tg-modal-content">
         <div class="tg-modal-title">📢 Join Our Official Channels</div>
-        <a href="https://t.me/LootifyDeal7" target="_blank" class="tg-channel-btn">Join Lootify Channel 🚀</a>
-        <a href="https://t.me/LootifyDeal7" target="_blank" class="tg-channel-btn">Join Main Channel ⚡</a>
+        <a href="https://t.me/Jadoin" target="_blank" class="tg-channel-btn">Channel 1 🚀</a>
+        <a href="https://t.me/LootifyDeal7" target="_blank" class="tg-channel-btn">Channel 2 ⚡</a>
         <button class="tg-close-btn" onclick="closeTgModal()">Cancel</button>
     </div>
 </div>
@@ -137,8 +141,9 @@
                         el.dataset.modalAttached = 'true';
                         el.addEventListener('click', (e) => {
                             e.preventDefault();
+                            e.stopPropagation();
                             document.getElementById('tg-custom-modal').style.display = 'flex';
-                        });
+                        }, true);
                     }
                 }
             });
