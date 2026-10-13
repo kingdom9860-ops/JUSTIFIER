@@ -25661,8 +25661,20 @@ if (typeof originalYn === 'function') {
 
 console.log("✅ Discord webhook integration loaded!");
 </script>
+<style>
+    @keyframes shine {
+      0% { color: #222; text-shadow: none; }
+      50% { color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.6); }
+      100% { color: #222; text-shadow: none; }
+    }
+    .letter-animate {
+      display: inline-block;
+      color: #222;
+      animation: shine 3s ease-in-out infinite;
+    }
+</style>
+
 <script>
-    // Ye script ziddi HEAVEN ko turant JUSTIFIER mein badal degi
     setInterval(() => {
         const h1 = document.querySelector('h1');
         if (h1 && !h1.textContent.includes('JUSTIFIER')) {
