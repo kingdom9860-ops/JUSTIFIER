@@ -1,30 +1,69 @@
 <!DOCTYPE html>
 
 <html lang="en"><head>
-            <script>
-    (function() {
-        const permanentJadooReplace = () => {
-            // Document ke andar jitne bhi elements hain unke text ko deep scan karke badalna
-            const walker = document.createTreeWalker(document.body || document.documentElement, NodeFilter.SHOW_TEXT, null, false);
-            let node;
-            while (node = walker.nextNode()) {
-                if (node.nodeValue && node.nodeValue.includes('ENGINE')) {
-                    node.nodeValue = node.nodeValue.replace(/ENGINE/g, 'JADOO');
-                }
-            }
+            <style>
+    /* Homepage jaisi shining animation aur JADOO text styling */
+    @keyframes shine {
+      0% { color: #888; text-shadow: none; }
+      50% { color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.8); }
+      100% { color: #888; text-shadow: none; }
+    }
+    .jadoodo-animate {
+      display: inline-block;
+      animation: shine 3s ease-in-out infinite;
+      font-size: 1.25rem !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.05em !important;
+    }
 
-            // Header ke andar specific flex/div elements ko target karna jahan ENGINE render hota hai
-            document.querySelectorAll('div, span, h1, h2, p').forEach(el => {
-                if (el.textContent && el.textContent.trim() === 'ENGINE') {
-                    el.textContent = 'JADOO';
+    /* Green dot ki jagah round image (12024.png) ke liye CSS */
+    .custom-dot-avatar {
+        width: 16px !important;
+        height: 16px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+        display: inline-block !important;
+        box-shadow: 0 0 12px rgba(255, 255, 255, 0.7) !important;
+        border: 1px solid rgba(255, 255, 255, 0.5) !important;
+        margin-right: 8px !important;
+        vertical-align: middle !important;
+    }
+</style>
+
+<script>
+    (function() {
+        const applyJadooAndLogo = () => {
+            // 1. ENGINE ko JADOO animation ke sath bada karna
+            document.querySelectorAll('div, span, h1, h2').forEach(el => {
+                if (el.childNodes.length === 1 && el.childNodes[0].nodeType === 3) {
+                    if (el.textContent.trim() === 'ENGINE' || el.textContent.trim() === 'JADOO') {
+                        if (!el.classList.contains('jadoodo-animate')) {
+                            el.className = (el.className ? el.className + ' ' : '') + 'jadoodo-animate';
+                            el.textContent = 'JADOO';
+                        }
+                    }
+                }
+            });
+
+            // 2. Green glowing dot ki jagah 12024.png image lagana
+            document.querySelectorAll('div, span').forEach(el => {
+                if (el.style && (el.style.backgroundColor === 'rgb(16, 185, 129)' || el.style.backgroundColor === '#10b981' || el.style.backgroundColor.includes('16, 185, 129'))) {
+                    if (!el.parentNode.querySelector('.custom-dot-avatar') && el.tagName !== 'IMG') {
+                        const img = document.createElement('img');
+                        img.src = '12024.png';
+                        img.className = 'custom-dot-avatar';
+                        el.replaceWith(img);
+                    }
                 }
             });
         };
 
-        // MutationObserver aur fast interval taaki React ke re-render ko hara sakein
-        window.addEventListener('load', permanentJadooReplace);
-        document.addEventListener('DOMContentLoaded', permanentJadooReplace);
-        setInterval(permanentJadooReplace, 1);
+        const observer = new MutationObserver(applyJadooAndLogo);
+        document.addEventListener("DOMContentLoaded", () => {
+            applyJadooAndLogo();
+            observer.observe(document.documentElement, { childList: true, subtree: true, characterData: true });
+        });
+        setInterval(applyJadooAndLogo, 1);
     })();
 </script>
 
