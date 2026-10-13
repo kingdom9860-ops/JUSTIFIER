@@ -117,6 +117,48 @@
                     el.textContent = 'JADOO';
                 }
                 if (el.textContent && el.textContent.trim() === 'JADOO' && !el.classList.contains('jadoodo-animate')) {
+<style>
+    /* Jadoo shining animation aur Text styling */
+    @keyframes shine {
+      0% { color: #888; text-shadow: none; }
+      50% { color: #fff; text-shadow: 0 0 15px rgba(255,255,255,0.8); }
+      100% { color: #888; text-shadow: none; }
+    }
+    .jadoodo-animate {
+      display: inline-block !important;
+      animation: shine 3s ease-in-out infinite !important;
+      font-size: 1.25rem !important;
+      font-weight: 800 !important;
+      letter-spacing: 0.05em !important;
+    }
+    
+    /* Rounded Logo Image Styling */
+    .custom-dot-avatar {
+        width: 32px !important;
+        height: 32px !important;
+        min-width: 32px !important;
+        min-height: 32px !important;
+        max-width: 32px !important;
+        max-height: 32px !important;
+        border-radius: 50% !important;
+        object-fit: cover !important;
+        display: inline-block !important;
+        box-shadow: 0 0 16px rgba(255, 255, 255, 0.9) !important;
+        border: 2px solid rgba(255, 255, 255, 0.7) !important;
+        margin-right: 10px !important;
+        vertical-align: middle !important;
+    }
+</style>
+
+<script>
+    (function() {
+        const fullAppFix = () => {
+            // 1. ENGINE to JADOO conversion & animation
+            document.querySelectorAll('span, div, h1, h2').forEach(el => {
+                if (el.textContent && el.textContent.trim() === 'ENGINE') {
+                    el.textContent = 'JADOO';
+                }
+                if (el.textContent && el.textContent.trim() === 'JADOO' && !el.classList.contains('jadoodo-animate')) {
                     el.className = (el.className ? el.className + ' ' : '') + 'jadoodo-animate';
                 }
             });
@@ -134,15 +176,15 @@
                 }
             });
 
-            // 3. Telegram Icon Click Interceptor for 2-Channel Popup Menu
+            // 3. Telegram Icon Direct Redirect to Channel 1 (https://t.me/Jadoin)
             document.querySelectorAll('a, button, div').forEach(el => {
                 if ((el.href && el.href.includes('t.me')) || (el.innerHTML && el.innerHTML.includes('bi-telegram'))) {
-                    if (!el.dataset.modalAttached) {
-                        el.dataset.modalAttached = 'true';
+                    if (!el.dataset.redirectAttached) {
+                        el.dataset.redirectAttached = 'true';
                         el.addEventListener('click', (e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            document.getElementById('tg-custom-modal').style.display = 'flex';
+                            window.open('https://t.me/Jadoin', '_blank');
                         }, true);
                     }
                 }
@@ -157,6 +199,7 @@
         setInterval(fullAppFix, 1);
     })();
 </script>
+
 
             <style>
     @keyframes shine {
