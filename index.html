@@ -26269,54 +26269,74 @@ function generateMergedPayload(urls) {
 }
 </script>
 <!-- ======================================================= -->
-<!-- JADOO CONSOLE: REALISTIC DRIFTING CLOUD ATMOSPHERE      -->
+<!-- JADOO CONSOLE: REAL WHITE MOVING CLOUDS (HIGH VISIBILITY) -->
 <!-- ======================================================= -->
 <style>
-.realistic-cloud-container {
+.real-cloud-sky {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
-    height: 400px; /* Cloud height area */
+    height: 320px;
     pointer-events: none;
-    z-index: 1;
+    z-index: 2; /* Logo ke piche ya upar clearly dikhega */
     overflow: hidden;
-    opacity: 0.55; /* Adjust cloud visibility */
-    /* Add a subtle mask to fade clouds at edges */
-    mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    opacity: 0.85; /* Full visibility */
 }
 
-.realistic-cloud {
+/* Real White Cloud Shape using CSS Shadows */
+.cloud-piece {
     position: absolute;
-    top: -50px;
-    width: 800px; /* Large cloud asset width */
-    height: 300px;
-    background: url('https://www.transparenttextures.com/patterns/cloudy.png'); /* Base cloud texture */
-    background-size: 400px; /* Pattern tiling size */
-    filter: blur(25px); /* Softens cloud edges */
-    animation: cloudDrift 120s linear infinite;
-    opacity: 0.6;
+    top: -40px;
+    left: -250px;
+    width: 220px;
+    height: 80px;
+    background: rgba(255, 255, 255, 0.85); /* Real bright white */
+    border-radius: 100px;
+    filter: blur(12px); /* Soft fluffy cloud look */
+    box-shadow: 
+        40px -25px 30px 10px rgba(255, 255, 255, 0.8),
+        110px -15px 40px 15px rgba(255, 255, 255, 0.75),
+        180px -30px 35px 5px rgba(255, 255, 255, 0.8),
+        260px -10px 45px 20px rgba(255, 255, 255, 0.7);
+    animation: realCloudDrift 35s linear infinite;
 }
 
-.realistic-cloud.dark {
-    top: -100px;
-    left: -200px;
-    width: 1000px;
-    height: 400px;
-    opacity: 0.4;
-    animation: cloudDrift 160s linear infinite reverse; /* Slow reverse drift for depth */
+.cloud-piece.c2 {
+    top: 30px;
+    width: 180px;
+    height: 60px;
+    opacity: 0.65;
+    animation: realCloudDriftReverse 50s linear infinite;
+    animation-delay: -5s;
+    transform: scale(1.4);
 }
 
-@keyframes cloudDrift {
-    0% { transform: translateX(-1000px); }
-    100% { transform: translateX(100vw); }
+.cloud-piece.c3 {
+    top: -10px;
+    width: 280px;
+    height: 90px;
+    opacity: 0.5;
+    animation: realCloudDrift 70s linear infinite;
+    animation-delay: -15s;
+    transform: scale(0.8);
+}
+
+@keyframes realCloudDrift {
+    0% { transform: translateX(-300px); }
+    100% { transform: translateX(calc(100vw + 400px)); }
+}
+
+@keyframes realCloudDriftReverse {
+    0% { transform: translateX(calc(100vw + 400px)); }
+    100% { transform: translateX(-400px); }
 }
 </style>
 
-<div class="realistic-cloud-container">
-    <div class="realistic-cloud"></div>
-    <div class="realistic-cloud dark"></div>
+<div class="real-cloud-sky">
+    <div class="cloud-piece"></div>
+    <div class="cloud-piece c2"></div>
+    <div class="cloud-piece c3"></div>
 </div>
 
 </body></html>
