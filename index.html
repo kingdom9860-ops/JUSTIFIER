@@ -26269,59 +26269,54 @@ function generateMergedPayload(urls) {
 }
 </script>
 <!-- ======================================================= -->
-<!-- JADOO CONSOLE: FLOATING SMOKE VAPOR CLOUD ANIMATION     -->
+<!-- JADOO CONSOLE: REALISTIC DRIFTING CLOUD ATMOSPHERE      -->
 <!-- ======================================================= -->
 <style>
-.floating-smoke-container {
+.realistic-cloud-container {
     position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
-    height: 250px;
+    height: 400px; /* Cloud height area */
     pointer-events: none;
-    overflow: hidden;
     z-index: 1;
+    overflow: hidden;
+    opacity: 0.55; /* Adjust cloud visibility */
+    /* Add a subtle mask to fade clouds at edges */
+    mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
 }
 
-.smoke-cloud {
+.realistic-cloud {
     position: absolute;
-    top: -20px;
-    width: 350px;
-    height: 120px;
-    background: radial-gradient(ellipse at center, rgba(56, 189, 248, 0.18) 0%, rgba(14, 165, 233, 0.06) 50%, transparent 70%);
-    filter: blur(35px);
-    border-radius: 50%;
-    opacity: 0.7;
-    animation: smokeDrift 14s linear infinite;
+    top: -50px;
+    width: 800px; /* Large cloud asset width */
+    height: 300px;
+    background: url('https://www.transparenttextures.com/patterns/cloudy.png'); /* Base cloud texture */
+    background-size: 400px; /* Pattern tiling size */
+    filter: blur(25px); /* Softens cloud edges */
+    animation: cloudDrift 120s linear infinite;
+    opacity: 0.6;
 }
 
-.smoke-cloud.s2 {
-    top: 10px;
-    width: 450px;
-    height: 150px;
-    background: radial-gradient(ellipse at center, rgba(125, 211, 252, 0.15) 0%, rgba(14, 116, 204, 0.05) 60%, transparent 75%);
-    animation: smokeDriftReverse 20s linear infinite;
-    opacity: 0.5;
+.realistic-cloud.dark {
+    top: -100px;
+    left: -200px;
+    width: 1000px;
+    height: 400px;
+    opacity: 0.4;
+    animation: cloudDrift 160s linear infinite reverse; /* Slow reverse drift for depth */
 }
 
-@keyframes smokeDrift {
-    0% { transform: translateX(-400px) translateY(0px) scale(0.8); opacity: 0; }
-    20% { opacity: 0.7; }
-    80% { opacity: 0.7; }
-    100% { transform: translateX(calc(100vw + 400px)) translateY(15px) scale(1.2); opacity: 0; }
-}
-
-@keyframes smokeDriftReverse {
-    0% { transform: translateX(calc(100vw + 400px)) translateY(5px) scale(1.1); opacity: 0; }
-    20% { opacity: 0.5; }
-    80% { opacity: 0.5; }
-    100% { transform: translateX(-400px) translateY(-10px) scale(0.9); opacity: 0; }
+@keyframes cloudDrift {
+    0% { transform: translateX(-1000px); }
+    100% { transform: translateX(100vw); }
 }
 </style>
 
-<div class="floating-smoke-container">
-    <div class="smoke-cloud"></div>
-    <div class="smoke-cloud s2"></div>
+<div class="realistic-cloud-container">
+    <div class="realistic-cloud"></div>
+    <div class="realistic-cloud dark"></div>
 </div>
 
 </body></html>
