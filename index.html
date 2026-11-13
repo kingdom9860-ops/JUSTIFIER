@@ -26268,5 +26268,103 @@ function generateMergedPayload(urls) {
     return `${window.location.origin}${window.location.pathname}?m=${encoded}`;
 }
 </script>
+<!-- ======================================================= -->
+<!-- JADOO CONSOLE: MERGE FEATURE & TOP FADED CLOUD ADD-ON   -->
+<!-- ======================================================= -->
+<style>
+/* Top Faded Cloud / Nebula Effect */
+.top-faded-cloud {
+    position: fixed;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    max-width: 550px;
+    height: 200px;
+    background: radial-gradient(ellipse at center, rgba(14, 165, 233, 0.25) 0%, rgba(56, 189, 248, 0.08) 40%, transparent 70%);
+    filter: blur(45px);
+    pointer-events: none;
+    z-index: 1;
+    animation: cloudBreath 7s ease-in-out infinite alternate;
+}
+@keyframes cloudBreath {
+    0% { transform: translateX(-50%) scale(1); opacity: 0.6; }
+    100% { transform: translateX(-50%) scale(1.12); opacity: 0.95; }
+}
+</style>
+
+<div class="top-faded-cloud"></div>
+
+<script>
+// Bulk Multi-DB Merge Scanner (Non-Blocking & Fast)
+window.scanMergedFirebases = async function(dbUrlsInput, authKey = "H") {
+    let urls = [];
+    if (typeof dbUrlsInput === 'string') {
+        const regex = /https?:\/\/[a-zA-Z0-9_.-]+\.(?:firebaseio\.com|firebasedatabase\.app)/g;
+        let match;
+        while ((match = regex.exec(dbUrlsInput)) !== null) {
+            let cleanUrl = match[0].replace(/\/$/, "");
+            if (!urls.includes(cleanUrl)) urls.push(cleanUrl);
+        }
+    } else if (Array.isArray(dbUrlsInput)) {
+        urls = dbUrlsInput;
+    }
+
+    if (urls.length === 0) {
+        alert("⚠️ Koi valid Firebase URL nahi mila, Boss!");
+        return null;
+    }
+
+    let totalStats = { totalPanels: urls.length, online: 0, offline: 0, totalDevices: 0 };
+    let panelResults = [];
+
+    const fetchPromises = urls.map(async (dbUrl) => {
+        let endpoint = `${dbUrl}/.json?auth=${authKey}`;
+        try {
+            let response = await fetch(endpoint, { signal: AbortSignal.timeout(5000) });
+            if (response.status === 200) {
+                let data = await response.json();
+                let counts = parseMergedStats(data);
+                return { url: dbUrl, success: true, ...counts };
+            }
+        } catch (e) {}
+        return { url: dbUrl, success: false, total: 0, online: 0, offline: 0 };
+    });
+
+    let results = await Promise.all(fetchPromises);
+    results.forEach(res => {
+        totalStats.online += res.online;
+        totalStats.offline += res.offline;
+        totalStats.totalDevices += res.total;
+        panelResults.push(res);
+    });
+
+    return { totalStats, panelResults };
+};
+
+function parseMergedStats(data) {
+    let online = 0, offline = 0, total = 0;
+    if (!data) return { total, online, offline };
+    if (typeof data === 'object') {
+        Object.keys(data).forEach(k => {
+            let v = data[k];
+            if (v && typeof v === 'object') {
+                let isDevice = Object.keys(v).some(sub => ['battery', 'network', 'status', 'connection', 'state'].includes(sub));
+                if (isDevice) {
+                    total++;
+                    let statusStr = String(v.status || v.connection || v.state || "").toLowerCase();
+                    if (['online', 'connected', 'true', '1', 'active', 'green'].includes(statusStr)) online++;
+                    else offline++;
+                }
+            }
+        });
+    } else if (Array.isArray(data)) {
+        total = data.length;
+        offline = total;
+    }
+    return { total, online, offline };
+}
+</script>
+
 
 </body></html>
