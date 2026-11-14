@@ -26269,66 +26269,88 @@ function generateMergedPayload(urls) {
 }
 </script>
 <!-- ======================================================= -->
-<!-- JADOO CONSOLE: SUBTLE TRANSPARENT FOG / MIST CLOUDS     -->
+<!-- JADOO CONSOLE: ALIGHT MOTION FRACTAL WARP CLOUD EFFECT  -->
 <!-- ======================================================= -->
+<!-- Invisible SVG Filter (Exact Fractal Warp Engine) -->
+<svg style="position:fixed; width:0; height:0; pointer-events:none;" aria-hidden="true">
+  <defs>
+    <filter id="fractal-warp-cloud" x="-50%" y="-50%" width="200%" height="200%">
+      <!-- Fractal Noise (Octaves = Detail level) -->
+      <feTurbulence type="fractalNoise" baseFrequency="0.018 0.045" numOctaves="5" seed="8" result="noise">
+        <!-- Internal cloud morphing animation -->
+        <animate attributeName="baseFrequency" values="0.018 0.045; 0.022 0.055; 0.018 0.045" dur="14s" repeatCount="indefinite" />
+      </feTurbulence>
+      <!-- Displacement Map (Magnitude = Warp strength on edges) -->
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="65" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </defs>
+</svg>
+
 <style>
-.real-cloud-sky {
+.fractal-sky-wrapper {
     position: fixed;
-    top: 0;
+    top: 5px;
     left: 0;
     width: 100vw;
-    height: 150px; /* Height kam kar di taaki logo tak na faile */
+    height: 170px;
     pointer-events: none;
     z-index: 2;
     overflow: hidden;
-    /* Neeche ki taraf smooth fade out */
-    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 100%);
-    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 20%, rgba(0,0,0,0) 100%);
 }
 
-.cloud-piece {
+/* Main Fractal Cloud Puff */
+.fractal-cloud-puff {
     position: absolute;
-    top: -25px;
-    left: -180px;
-    width: 110px; /* Width kaafi kam kar di */
-    height: 40px;
-    background: rgba(255, 255, 255, 0.16); /* Halka transparent fog */
-    border-radius: 100px;
-    filter: blur(22px); /* Extra soft mist look */
-    box-shadow: 
-        35px 5px 25px 8px rgba(255, 255, 255, 0.14),
-        85px -5px 30px 12px rgba(255, 255, 255, 0.18),
-        135px 5px 25px 6px rgba(255, 255, 255, 0.12);
-    animation: realCloudDrift 32s linear infinite;
+    top: 25px;
+    left: -260px;
+    width: 210px;
+    height: 55px;
+    border-radius: 50%;
+    /* Center bright white, fading softly to edges */
+    background: radial-gradient(ellipse at center, 
+        rgba(255, 255, 255, 0.92) 0%, 
+        rgba(240, 248, 255, 0.65) 42%, 
+        rgba(255, 255, 255, 0.2) 68%, 
+        transparent 82%);
+    /* Apply Fractal Warp + Soft Edge Blur */
+    filter: url(#fractal-warp-cloud) blur(4px);
+    will-change: transform, opacity;
+    animation: fractalCloudMove 20s linear infinite;
 }
 
-.cloud-piece.c2 {
-    top: 5px;
-    width: 90px;
-    height: 32px;
-    background: rgba(255, 255, 255, 0.12);
-    box-shadow: 
-        30px 0px 25px 6px rgba(255, 255, 255, 0.12),
-        75px 5px 28px 10px rgba(255, 255, 255, 0.10);
-    animation: realCloudDriftReverse 45s linear infinite;
-    animation-delay: -12s;
+/* Second subtle background cloud for depth */
+.fractal-cloud-puff.puff-2 {
+    top: 40px;
+    width: 175px;
+    height: 45px;
+    opacity: 0.6;
+    animation: fractalCloudMove 28s linear infinite;
+    animation-delay: -10s;
 }
 
-@keyframes realCloudDrift {
-    0% { transform: translateX(-220px); }
-    100% { transform: translateX(calc(100vw + 250px)); }
-}
-
-@keyframes realCloudDriftReverse {
-    0% { transform: translateX(calc(100vw + 250px)); }
-    100% { transform: translateX(-220px); }
+@keyframes fractalCloudMove {
+    0% {
+        transform: translateX(0px) scale(0.95);
+        opacity: 0;
+    }
+    12% {
+        opacity: 0.95;
+    }
+    88% {
+        opacity: 0.95;
+    }
+    100% {
+        transform: translateX(calc(100vw + 480px)) scale(1.05);
+        opacity: 0;
+    }
 }
 </style>
 
-<div class="real-cloud-sky">
-    <div class="cloud-piece"></div>
-    <div class="cloud-piece c2"></div>
+<div class="fractal-sky-wrapper">
+    <div class="fractal-cloud-puff"></div>
+    <div class="fractal-cloud-puff puff-2"></div>
 </div>
+
 
 
 </body></html>
