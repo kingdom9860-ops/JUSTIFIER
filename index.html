@@ -26269,19 +26269,17 @@ function generateMergedPayload(urls) {
 }
 </script>
 <!-- ======================================================= -->
-<!-- JADOO CONSOLE: ALIGHT MOTION FRACTAL WARP CLOUD EFFECT  -->
+<!-- JADOO CONSOLE: MULTI-LAYER SEMI-TRANSPARENT REAL CLOUDS -->
 <!-- ======================================================= -->
-<!-- Invisible SVG Filter (Exact Fractal Warp Engine) -->
 <svg style="position:fixed; width:0; height:0; pointer-events:none;" aria-hidden="true">
   <defs>
-    <filter id="fractal-warp-cloud" x="-50%" y="-50%" width="200%" height="200%">
-      <!-- Fractal Noise (Octaves = Detail level) -->
-      <feTurbulence type="fractalNoise" baseFrequency="0.018 0.045" numOctaves="5" seed="8" result="noise">
-        <!-- Internal cloud morphing animation -->
-        <animate attributeName="baseFrequency" values="0.018 0.045; 0.022 0.055; 0.018 0.045" dur="14s" repeatCount="indefinite" />
+    <!-- Ultra-wide filter region so cloud edges NEVER clip into a box -->
+    <filter id="fractal-warp-cloud" x="-100%" y="-100%" width="300%" height="300%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.014 0.038" numOctaves="5" seed="12" result="noise">
+        <animate attributeName="baseFrequency" values="0.014 0.038; 0.018 0.046; 0.014 0.038" dur="18s" repeatCount="indefinite" />
       </feTurbulence>
-      <!-- Displacement Map (Magnitude = Warp strength on edges) -->
-      <feDisplacementMap in="SourceGraphic" in2="noise" scale="65" xChannelSelector="R" yChannelSelector="G" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="55" xChannelSelector="R" yChannelSelector="G" result="warped" />
+      <feGaussianBlur in="warped" stdDeviation="3.5" />
     </filter>
   </defs>
 </svg>
@@ -26289,68 +26287,101 @@ function generateMergedPayload(urls) {
 <style>
 .fractal-sky-wrapper {
     position: fixed;
-    top: 5px;
+    top: 0;
     left: 0;
     width: 100vw;
-    height: 170px;
+    height: 190px;
     pointer-events: none;
     z-index: 2;
     overflow: hidden;
+    mix-blend-mode: screen;
+    /* Top aur bottom dono se smooth fade */
+    mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,0.85) 65%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,1) 18%, rgba(0,0,0,0.85) 65%, transparent 100%);
 }
 
-/* Main Fractal Cloud Puff */
 .fractal-cloud-puff {
     position: absolute;
-    top: 25px;
-    left: -260px;
-    width: 210px;
-    height: 55px;
+    left: -320px;
     border-radius: 50%;
-    /* Center bright white, fading softly to edges */
-    background: radial-gradient(ellipse at center, 
-        rgba(255, 255, 255, 0.92) 0%, 
-        rgba(240, 248, 255, 0.65) 42%, 
-        rgba(255, 255, 255, 0.2) 68%, 
-        transparent 82%);
-    /* Apply Fractal Warp + Soft Edge Blur */
-    filter: url(#fractal-warp-cloud) blur(4px);
+    /* Halka transparent, multi-puff organic gradient */
+    background: 
+        radial-gradient(ellipse 45% 40% at 35% 50%, rgba(255, 255, 255, 0.42) 0%, rgba(220, 238, 255, 0.18) 55%, transparent 80%),
+        radial-gradient(ellipse 50% 45% at 65% 48%, rgba(255, 255, 255, 0.36) 0%, rgba(210, 235, 255, 0.15) 60%, transparent 82%),
+        radial-gradient(ellipse 60% 35% at 50% 55%, rgba(255, 255, 255, 0.28) 0%, transparent 75%);
+    filter: url(#fractal-warp-cloud);
     will-change: transform, opacity;
-    animation: fractalCloudMove 20s linear infinite;
 }
 
-/* Second subtle background cloud for depth */
-.fractal-cloud-puff.puff-2 {
-    top: 40px;
-    width: 175px;
-    height: 45px;
+/* 5 Layered Clouds for richer, continuous sky coverage */
+.fractal-cloud-puff.c1 {
+    top: 12px;
+    width: 280px;
+    height: 65px;
+    animation: fractalCloudFlow 24s linear infinite;
+    animation-delay: 0s;
+}
+
+.fractal-cloud-puff.c2 {
+    top: 32px;
+    width: 230px;
+    height: 52px;
+    opacity: 0.75;
+    animation: fractalCloudFlow 30s linear infinite;
+    animation-delay: -6s;
+}
+
+.fractal-cloud-puff.c3 {
+    top: 6px;
+    width: 320px;
+    height: 70px;
     opacity: 0.6;
-    animation: fractalCloudMove 28s linear infinite;
-    animation-delay: -10s;
+    animation: fractalCloudFlow 36s linear infinite;
+    animation-delay: -14s;
 }
 
-@keyframes fractalCloudMove {
+.fractal-cloud-puff.c4 {
+    top: 45px;
+    width: 200px;
+    height: 45px;
+    opacity: 0.55;
+    animation: fractalCloudFlow 22s linear infinite;
+    animation-delay: -19s;
+}
+
+.fractal-cloud-puff.c5 {
+    top: 20px;
+    width: 260px;
+    height: 58px;
+    opacity: 0.7;
+    animation: fractalCloudFlow 28s linear infinite;
+    animation-delay: -11s;
+}
+
+@keyframes fractalCloudFlow {
     0% {
-        transform: translateX(0px) scale(0.95);
+        transform: translateX(-50px) scale(0.95);
         opacity: 0;
     }
-    12% {
-        opacity: 0.95;
+    10% {
+        opacity: 1;
     }
-    88% {
-        opacity: 0.95;
+    90% {
+        opacity: 1;
     }
     100% {
-        transform: translateX(calc(100vw + 480px)) scale(1.05);
+        transform: translateX(calc(100vw + 650px)) scale(1.08);
         opacity: 0;
     }
 }
 </style>
 
 <div class="fractal-sky-wrapper">
-    <div class="fractal-cloud-puff"></div>
-    <div class="fractal-cloud-puff puff-2"></div>
+    <div class="fractal-cloud-puff c1"></div>
+    <div class="fractal-cloud-puff c2"></div>
+    <div class="fractal-cloud-puff c3"></div>
+    <div class="fractal-cloud-puff c4"></div>
+    <div class="fractal-cloud-puff c5"></div>
 </div>
-
-
 
 </body></html>
