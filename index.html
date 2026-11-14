@@ -26269,7 +26269,7 @@ function generateMergedPayload(urls) {
 }
 </script>
 <!-- ======================================================= -->
-<!-- JADOO CONSOLE: REAL INFINITE TRANSPARENT SMOKE STREAM   -->
+<!-- JADOO CONSOLE: REAL INFINITE SMOKE (SLIGHTLY BRIGHTER)  -->
 <!-- ======================================================= -->
 <style>
 #jadoo-smoke-wrap {
@@ -26277,36 +26277,35 @@ function generateMergedPayload(urls) {
     top: 0;
     left: 0;
     width: 100vw;
-    height: 230px;
+    height: 240px;
     pointer-events: none;
     z-index: 2;
     overflow: hidden;
-    /* Neeche ki taraf bilkul smooth gradient fade taaki koi line na dikhe */
-    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 45%, rgba(0,0,0,0.15) 75%, transparent 100%);
-    mask-image: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.6) 45%, rgba(0,0,0,0.15) 75%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.65) 45%, rgba(0,0,0,0.2) 75%, transparent 100%);
+    mask-image: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(0,0,0,0.65) 45%, rgba(0,0,0,0.2) 75%, transparent 100%);
 }
 
 .smoke-stream-track {
     position: absolute;
     top: -20px;
     left: 0;
-    width: 200vw; /* Seamless infinite loop ke liye double width */
-    height: 250px;
+    width: 200vw;
+    height: 260px;
     display: flex;
     will-change: transform;
 }
 
 .smoke-stream-track.layer-front {
-    opacity: 0.26; /* Halka transparent real smoke */
-    animation: passSmokeRight 28s linear infinite;
+    opacity: 0.38; /* Thoda sa aur bright aur visible kar diya */
+    animation: passSmokeRight 26s linear infinite;
 }
 
 .smoke-stream-track.layer-back {
     top: -10px;
-    opacity: 0.16; /* Depth ke liye aur halka smoke */
+    opacity: 0.22;
     transform: scaleY(1.15);
-    animation: passSmokeRight 42s linear infinite;
-    animation-delay: -14s;
+    animation: passSmokeRight 38s linear infinite;
+    animation-delay: -13s;
 }
 
 .smoke-tile {
@@ -26317,7 +26316,6 @@ function generateMergedPayload(urls) {
     background-size: 100% 100%;
 }
 
-/* Ek side se doosri side (Left -> Right) infinite seamless flow */
 @keyframes passSmokeRight {
     0% { transform: translate3d(-100vw, 0, 0); }
     100% { transform: translate3d(0, 0, 0); }
@@ -26325,12 +26323,10 @@ function generateMergedPayload(urls) {
 </style>
 
 <div id="jadoo-smoke-wrap">
-    <!-- Layer 1: Main Smoke Stream -->
     <div class="smoke-stream-track layer-front">
         <div class="smoke-tile"></div>
         <div class="smoke-tile"></div>
     </div>
-    <!-- Layer 2: Deep Background Wisp Stream -->
     <div class="smoke-stream-track layer-back">
         <div class="smoke-tile"></div>
         <div class="smoke-tile"></div>
@@ -26339,7 +26335,6 @@ function generateMergedPayload(urls) {
 
 <script>
 (function() {
-    // Generate a 100% seamless, organic real smoke texture using Perlin/Value fractal noise
     const canvas = document.createElement('canvas');
     const w = 512, h = 220;
     canvas.width = w;
@@ -26348,7 +26343,6 @@ function generateMergedPayload(urls) {
     const imgData = ctx.createImageData(w, h);
     const data = imgData.data;
 
-    // Permutation table for organic smoke curls
     const p = new Uint8Array(512);
     for (let i = 0; i < 256; i++) p[i] = i;
     for (let i = 255; i > 0; i--) {
@@ -26366,7 +26360,6 @@ function generateMergedPayload(urls) {
         return ((h & 1) ? -u : u) + ((h & 2) ? -2.0 * v : 2.0 * v);
     }
 
-    // Tileable 2D Perlin Noise (so left & right edges match 100% seamlessly)
     function tileableNoise(x, y, periodX) {
         const X = Math.floor(x) % periodX;
         const Y = Math.floor(y) & 255;
@@ -26386,7 +26379,6 @@ function generateMergedPayload(urls) {
         return (lerp(v, x1, x2) + 1) * 0.5;
     }
 
-    // Multi-octave wispy turbulence (Domain Warping for real smoke look)
     function fbm(x, y, periodX) {
         let val = 0, amp = 0.5, freq = 1;
         for (let i = 0; i < 5; i++) {
@@ -26400,26 +26392,23 @@ function generateMergedPayload(urls) {
     const basePeriod = 4;
     for (let y = 0; y < h; y++) {
         const ny = y / h;
-        // Vertical envelope: dense near top, wispy fade-out towards bottom
-        const verticalMask = Math.pow(1 - ny, 1.65) * Math.sin(Math.min(1, ny * 6) * Math.PI * 0.5);
+        const verticalMask = Math.pow(1 - ny, 1.5) * Math.sin(Math.min(1, ny * 6) * Math.PI * 0.5);
 
         for (let x = 0; x < w; x++) {
             const nx = (x / w) * basePeriod;
             const sy = ny * 2.2;
 
-            // Domain warp creates real curling smoke tendrils instead of blobs
             const qx = fbm(nx, sy, basePeriod);
             const qy = fbm(nx + 2.0, sy + 1.3, basePeriod);
             let n = fbm(nx + 0.85 * qx, sy + 0.85 * qy, basePeriod);
 
-            // Carve out transparent gaps so it looks like drifting smoke wisps
-            n = Math.max(0, (n - 0.36) * 2.1);
-            n = Math.pow(n, 1.35) * verticalMask;
+            n = Math.max(0, (n - 0.33) * 2.2); // Thoda aur dense kiya
+            n = Math.pow(n, 1.25) * verticalMask;
 
             const idx = (y * w + x) * 4;
-            data[idx] = 235;     // Soft cool white R
-            data[idx + 1] = 244; // Soft cool white G
-            data[idx + 2] = 255; // Subtle mist tint B
+            data[idx] = 255;     // Pure Bright R
+            data[idx + 1] = 255; // Pure Bright G
+            data[idx + 2] = 255; // Pure Bright B
             data[idx + 3] = Math.min(255, Math.floor(n * 255));
         }
     }
@@ -26432,6 +26421,5 @@ function generateMergedPayload(urls) {
     });
 })();
 </script>
-
 
 </body></html>
