@@ -26512,6 +26512,151 @@ function generateMergedPayload(urls) {
     };
 })();
 </script>
+<!-- ======================================================= -->
+<!-- JADOO CONSOLE: 3D NEUMORPHIC UI & JUSTIFIER TG REDIRECT -->
+<!-- ======================================================= -->
+<style>
+/* 3D Neumorphic Outer Card (Saved Accounts Container) */
+.jadoo-neu-card {
+    background: linear-gradient(145deg, #111316, #0a0b0d) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow:
+        0 18px 38px rgba(0, 0, 0, 0.85),
+        inset 0 1px 1px rgba(255, 255, 255, 0.12),
+        inset 0 -2px 6px rgba(0, 0, 0, 0.8),
+        0 0 0 6px rgba(255, 255, 255, 0.025) !important;
+    border-radius: 24px !important;
+    backdrop-filter: blur(18px) !important;
+    -webkit-backdrop-filter: blur(18px) !important;
+}
+
+/* Inner Account Item Card (3D Gloss + Recessed Depth) */
+.jadoo-neu-item {
+    background: radial-gradient(circle at 22% 18%, rgba(255, 255, 255, 0.09) 0%, rgba(22, 24, 29, 0.88) 48%, rgba(12, 13, 16, 0.96) 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.09) !important;
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.65),
+        inset 0 1px 1px rgba(255, 255, 255, 0.14),
+        inset 0 -2px 5px rgba(0, 0, 0, 0.75) !important;
+    border-radius: 16px !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+/* 3D Recessed "+ New Account" Button */
+.jadoo-neu-btn {
+    background: linear-gradient(180deg, #14161a 0%, #0c0d10 100%) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.7),
+        inset 0 1px 1px rgba(255, 255, 255, 0.12),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.85) !important;
+    border-radius: 14px !important;
+    transition: all 0.2s ease !important;
+}
+.jadoo-neu-btn:active {
+    transform: scale(0.98) !important;
+    box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.9) !important;
+}
+
+/* 3D Glossy Round Action Icons (Share & Delete) */
+.jadoo-neu-icon {
+    box-shadow:
+        0 4px 10px rgba(0, 0, 0, 0.6),
+        inset 0 1px 1px rgba(255, 255, 255, 0.22),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.6) !important;
+    backdrop-filter: blur(8px) !important;
+}
+
+/* Clickable JUSTIFIER Title Styling */
+.jadoo-brand-link {
+    cursor: pointer !important;
+    transition: filter 0.2s ease, transform 0.2s ease !important;
+}
+.jadoo-brand-link:hover {
+    filter: brightness(1.2) drop-shadow(0 0 12px rgba(255, 255, 255, 0.35)) !important;
+}
+.jadoo-brand-link:active {
+    transform: scale(0.97) !important;
+}
+</style>
+
+<script>
+(function() {
+    const TG_CHANNEL_URL = "https://t.me/Jadoin";
+
+    function applyJadooEnhancements() {
+        const root = document.getElementById("root") || document.body;
+        if (!root) return;
+
+        // 1. Make "JUSTIFIER" heading redirect to Telegram channel
+        const allElements = root.querySelectorAll("h1, h2, h3, div, span, p");
+        allElements.forEach(el => {
+            if (el.children.length === 0) {
+                const txt = (el.textContent || "").trim();
+                if (txt === "JUSTIFIER" && el.dataset.jadooLinkBound !== "1") {
+                    el.dataset.jadooLinkBound = "1";
+                    el.classList.add("jadoo-brand-link");
+                    el.title = "Join Telegram Channel";
+                    el.addEventListener("click", function(e) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        window.open(TG_CHANNEL_URL, "_blank", "noopener,noreferrer");
+                    });
+                }
+            }
+
+            // 2. Style "+ New Account" button
+            if (el.tagName === "BUTTON" || el.getAttribute("role") === "button") {
+                const btnTxt = (el.textContent || "").trim();
+                if (btnTxt.includes("New Account") && !el.classList.contains("jadoo-neu-btn")) {
+                    el.classList.add("jadoo-neu-btn");
+                }
+            }
+        });
+
+        // 3. Style "Saved Accounts" main card & inner account items
+        const headings = Array.from(root.querySelectorAll("*")).filter(
+            el => el.children.length === 0 && (el.textContent || "").trim() === "Saved Accounts"
+        );
+
+        headings.forEach(h => {
+            let card = h.parentElement;
+            while (card && card !== root && card !== document.body) {
+                const rect = card.getBoundingClientRect();
+                if (rect.width > 260 && rect.height > 150 && rect.height < 650) {
+                    if (!card.classList.contains("jadoo-neu-card")) {
+                        card.classList.add("jadoo-neu-card");
+                    }
+                    // Find inner account rows (containing firebaseio / firebasedatabase / http)
+                    card.querySelectorAll("div").forEach(inner => {
+                        const t = inner.innerText || "";
+                        const r = inner.getBoundingClientRect();
+                        if ((t.includes("http") || t.includes("firebase") || /\d{2}\/\d{2}\/\d{4}/.test(t)) &&
+                            r.height >= 55 && r.height <= 140 && r.width > 220 && inner !== card) {
+                            if (!inner.classList.contains("jadoo-neu-item")) {
+                                inner.classList.add("jadoo-neu-item");
+                            }
+                            // Enhance round action buttons inside item
+                            inner.querySelectorAll("button").forEach(b => {
+                                if (!b.classList.contains("jadoo-neu-icon")) {
+                                    b.classList.add("jadoo-neu-icon");
+                                }
+                            });
+                        }
+                    });
+                    break;
+                }
+                card = card.parentElement;
+            }
+        });
+    }
+
+    // Run immediately + observe React DOM updates
+    applyJadooEnhancements();
+    const uiObserver = new MutationObserver(() => applyJadooEnhancements());
+    uiObserver.observe(document.body, { childList: true, subtree: true });
+})();
+</script>
 
 
 </body></html>
