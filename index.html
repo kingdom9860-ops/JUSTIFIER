@@ -26421,5 +26421,97 @@ function generateMergedPayload(urls) {
     });
 })();
 </script>
+            <!-- ======================================================= -->
+<!-- JADOO CONSOLE: MUTE / HIDE PROMO & SPAM SMS MESSAGES     -->
+<!-- ======================================================= -->
+<script>
+(function() {
+    // Jin phrases ya links wale messages ko mute/hide karna hai
+    const BLOCKED_PATTERNS = [
+        "join telegram channel for free firebase",
+        "free firebase and otp pannels",
+        "t.me/+twbv9wddowkwmgm1",
+        "free otp pannels"
+    ];
+
+    function shouldHideText(str) {
+        if (!str) return false;
+        const normalized = str.replace(/\s+/g, " ").trim().toLowerCase();
+        return BLOCKED_PATTERNS.some(pattern => normalized.includes(pattern));
+    }
+
+    function findMessageCard(node) {
+        let curr = node.nodeType === 1 ? node : node.parentElement;
+        const root = document.getElementById("root");
+        while (curr && curr !== root && curr !== document.body) {
+            // Typical SMS item card container detection (avoid hiding whole list/page)
+            const textLen = (curr.innerText || "").length;
+            if (textLen > 0 && textLen < 600) {
+                const hasTimeOrSender = /\d{2}-\d{2}-\d{4}/.test(curr.innerText || "") || curr.querySelector("svg, button");
+                if (hasTimeOrSender) {
+                    return curr;
+                }
+            }
+            curr = curr.parentElement;
+        }
+        return node.nodeType === 1 ? node : node.parentElement;
+    }
+
+    function muteBlockedMessages(scope = document.getElementById("root") || document.body) {
+        if (!scope) return;
+        const walker = document.createTreeWalker(scope, NodeFilter.SHOW_TEXT, null);
+        let textNode;
+        const cardsToHide = new Set();
+
+        while ((textNode = walker.nextNode())) {
+            if (shouldHideText(textNode.nodeValue)) {
+                const card = findMessageCard(textNode);
+                if (card && card.id !== "root") {
+                    cardsToHide.add(card);
+                }
+            }
+        }
+
+        cardsToHide.forEach(card => {
+            if (card.dataset.jadooMuted !== "1") {
+                card.dataset.jadooMuted = "1";
+                card.style.setProperty("display", "none", "important");
+            }
+        });
+    }
+
+    // Initial scan + continuous live watch for auto-refreshed SMS
+    muteBlockedMessages();
+
+    const observer = new MutationObserver((mutations) => {
+        for (const m of mutations) {
+            if (m.type === "childList" && m.addedNodes.length > 0) {
+                m.addedNodes.forEach(added => {
+                    if (added.nodeType === 1 || added.nodeType === 3) {
+                        muteBlockedMessages(added.nodeType === 1 ? added : added.parentElement);
+                    }
+                });
+            } else if (m.type === "characterData" && m.target) {
+                muteBlockedMessages(m.target.parentElement);
+            }
+        }
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+        characterData: true
+    });
+
+    // Helper function agar baad mein aur koi text block karna ho
+    window.addBlockedSmsPattern = function(phrase) {
+        if (phrase && typeof phrase === "string") {
+            BLOCKED_PATTERNS.push(phrase.trim().toLowerCase());
+            muteBlockedMessages();
+        }
+    };
+})();
+</script>
+
 
 </body></html>
